@@ -1,0 +1,24 @@
+@import './../../colors';
+
+.card {
+  width: 7rem;
+  height: 10rem;
+  border: solid black 0.25rem;
+}
+
+.card-object {
+  background-color: $thing-from-the-future-red;
+}
+
+.card-mood {
+ background-color: $thing-from-the-future-violet;
+}
+
+.card-terrain {
+  background-color: $thing-from-the-future-blue;
+}
+
+.card-arc {
+ background-color: $thing-from-the-future-green
+
+}
