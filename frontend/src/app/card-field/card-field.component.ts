@@ -33,6 +33,54 @@ export class CardFieldComponent implements OnInit {
       term2: "",
       time: ""
     },
+    {
+      category: "object",
+      term: "postcard",
+      term2: "",
+      time: ""
+    },
+    {
+      category: "mood",
+      term: "melancholy",
+      term2: "",
+      time: ""
+    },
+    {
+      category: "terrain",
+      term: "grandma's house",
+      term2: "water",
+      time: ""
+    },
+    {
+      category:  "arc",
+      term: "grow",
+      term2: "",
+      time: ""
+    },
+    {
+      category: "object",
+      term: "postcard",
+      term2: "",
+      time: ""
+    },
+    {
+      category: "mood",
+      term: "melancholy",
+      term2: "",
+      time: ""
+    },
+    {
+      category: "terrain",
+      term: "grandma's house",
+      term2: "water",
+      time: ""
+    },
+    {
+      category:  "arc",
+      term: "grow",
+      term2: "",
+      time: ""
+    },
   ];
 
 

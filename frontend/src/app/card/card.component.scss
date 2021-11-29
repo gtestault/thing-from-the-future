@@ -1,10 +1,13 @@
 @import './../../colors';
+@import './../../fonts';
 
 .card {
   width: 7rem;
   height: 10rem;
   border: solid black 0.25rem;
   border-radius: 0.5rem;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 .card-object {
@@ -22,4 +25,19 @@
 .card-arc {
  background-color: $tftf-green
 
+}
+
+.card-category {
+  font-family: 'Cabin', sans-serif;
+  color: white;
+}
+
+.card-term {
+  font-family: 'Bebas Neue', cursive;
+  color: black;
+}
+
+.card-term2 {
+  font-family: 'Bebas Neue', cursive;
+  color: black;
 }

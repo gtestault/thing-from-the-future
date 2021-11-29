@@ -1,3 +1,5 @@
 <div class="card" [ngClass]="{'card-object': category === 'object', 'card-mood': category === 'mood', 'card-terrain': category === 'terrain', 'card-arc': category === 'arc'}">
-
+  <div class="card-category">{{category}}</div>
+  <div class="card-term">{{term}}</div>
+  <div *ngIf="term2" class="card-term2">{{term2}}</div>
 </div>
