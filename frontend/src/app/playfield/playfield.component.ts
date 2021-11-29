@@ -8,34 +8,6 @@ import { Card} from '../../models/Card';
 })
 export class PlayfieldComponent implements OnInit {
 
-  cards: Card[] = [
-    {
-      category: "object",
-      term: "postcard",
-      term2: "",
-      time: ""
-  },
-    {
-      category: "mood",
-      term: "melancholy",
-      term2: "",
-      time: ""
-    },
-    {
-      category: "terrain",
-      term: "grandma's house",
-      term2: "water",
-      time: ""
-    },
-    {
-      category:  "arc",
-      term: "grow",
-      term2: "",
-      time: ""
-    },
-  ];
-
-
   constructor() { }
 
   ngOnInit(): void {
