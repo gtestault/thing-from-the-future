@@ -4,21 +4,22 @@
   width: 7rem;
   height: 10rem;
   border: solid black 0.25rem;
+  border-radius: 0.5rem;
 }
 
 .card-object {
-  background-color: $thing-from-the-future-red;
+  background-color: $tftf-red;
 }
 
 .card-mood {
- background-color: $thing-from-the-future-violet;
+ background-color: $tftf-violet;
 }
 
 .card-terrain {
-  background-color: $thing-from-the-future-blue;
+  background-color: $tftf-blue;
 }
 
 .card-arc {
- background-color: $thing-from-the-future-green
+ background-color: $tftf-green
 
 }
