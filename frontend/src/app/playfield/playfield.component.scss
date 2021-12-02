@@ -4,6 +4,8 @@
 :host {
   display: grid;
   grid-template-rows: auto auto auto auto;
+  justify-items: center;
+  grid-row-gap: 2rem;
 }
 
 .game-title {
