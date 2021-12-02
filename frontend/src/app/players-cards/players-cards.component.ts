@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import {Card} from '../../models/Card';
 
 @Component({
-  selector: 'app-card-field',
-  templateUrl: './card-field.component.html',
-  styleUrls: ['./card-field.component.scss']
+  selector: 'app-players-cards',
+  templateUrl: './players-cards.component.html',
+  styleUrls: ['./players-cards.component.scss']
 })
-export class CardFieldComponent implements OnInit {
+export class PlayersCardsComponent implements OnInit {
 
   cards: Card[] = [
     {
