@@ -8,6 +8,7 @@
   border-radius: 1rem;
   text-align: center;
   text-transform: uppercase;
+  padding: 0.5rem 0 0.5rem 0;
 }
 
 .card-object {
@@ -20,11 +21,12 @@
 
 .card-terrain {
   background-color: $tftf-blue;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
 }
 
 .card-arc {
  background-color: $tftf-green
-
 }
 
 .card-category {
@@ -37,7 +39,12 @@
   color: black;
 }
 
-.card-term2 {
-  font-family: 'Bebas Neue', cursive;
-  color: black;
+
+.extra-terrain-fields {
+ transform: (180deg);
+  /* Safari */
+  -webkit-transform: rotate(180deg);
+
+  /* Firefox */
+  -moz-transform: rotate(180deg);
 }
