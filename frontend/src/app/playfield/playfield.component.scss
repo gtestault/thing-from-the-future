@@ -1,1 +1,13 @@
+@import './../../colors';
+@import './../../fonts';
 
+:host {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr 2fr;
+}
+
+.game-title {
+  color: white;
+  font-family: 'Bebas Neue', cursive;
+  text-align: center;
+}
