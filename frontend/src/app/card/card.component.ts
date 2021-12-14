@@ -26,4 +26,11 @@ export class CardComponent implements OnInit {
     }
   }
 
+  getCurrentTerm (): String {
+    if (this.term2 && !this.turnAround) {
+      return this.term;
+    }
+    return this.term2;
+  }
+
 }
