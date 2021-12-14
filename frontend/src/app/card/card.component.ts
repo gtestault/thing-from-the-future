@@ -14,8 +14,16 @@ export class CardComponent implements OnInit {
   @Input() term2 = "";
   @Input() time = ""
 
+  turnAround = false;
+
   ngOnInit(): void {
 
+  }
+
+  turnCard() {
+    if (this.term2) {
+      this.turnAround = !this.turnAround;
+    }
   }
 
 }

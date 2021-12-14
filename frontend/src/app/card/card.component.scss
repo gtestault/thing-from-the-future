@@ -42,17 +42,16 @@
   margin-bottom: 0.5rem;
 }
 
+.card-line {
+  stroke-width: 2px;
+}
 
-.extra-terrain-fields {
- transform: (180deg);
+.turn-around {
+  transform: (180deg);
   /* Safari */
   -webkit-transform: rotate(180deg);
 
   /* Firefox */
   -moz-transform: rotate(180deg);
   align-self: end;
-}
-
-.card-line {
-  stroke-width: 2px;
 }
