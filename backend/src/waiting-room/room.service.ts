@@ -1,16 +1,14 @@
 import {Injectable, Logger} from '@nestjs/common';
-import {Player} from "./models/player";
 import * as xkcd from "xkcd-password"
-import {Room} from "./models/room";
-
-export interface RoomStore {
-    [key: string]: Room
-}
+import {Player} from "../player/schemas/player.schema";
+import {InjectModel} from "@nestjs/mongoose";
+import {Model} from "mongoose";
+import {Room, RoomDocument} from "./schemas/room.schema";
 
 @Injectable()
 export class RoomService {
     private readonly logger = new Logger(RoomService.name);
-    private rooms: RoomStore = {}
+    constructor(@InjectModel(Room.name) private roomModel: Model<RoomDocument>) { }
 
     /**
      * Creates a room for a thing-for-the-future game
@@ -18,16 +16,16 @@ export class RoomService {
      *
      * returns the id of the created room
      */
-    async createRoom(player: Player) {
+    async createRoom(player: Player): Promise<string> {
         const passphrase = await (new xkcd()).generate();
         const roomId = passphrase.join('-')
-        this.rooms[roomId] = new Room(roomId, player)
-        this.logger.log(`created new room with id: ${roomId}`)
+        const room = new this.roomModel({_id: roomId, admin: player})
+        this.logger.log(`created new room with id: ${roomId} with admin ${player.username}`)
         return roomId
     }
     async joinRoom(player: Player, roomId: string) {
-        const room = this.rooms[roomId]
-        room.addPlayer(player)
-        this.logger.log(`player '${player.username}' joined room: '${room.id}'`)
+        let room = await this.roomModel.findById(roomId).exec()
+        room.players = [...room.players, player]
+        await room.save()
     }
 }

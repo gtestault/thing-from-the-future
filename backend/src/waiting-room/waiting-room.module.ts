@@ -1,10 +1,17 @@
 import { Module } from '@nestjs/common';
 import {WaitingRoomGateway} from "./waiting-room.gateway";
 import {RoomService} from "./room.service";
-import {PlayerService} from "./player.service";
+import {MongooseModule} from "@nestjs/mongoose";
+import {Room, RoomSchema} from "./schemas/room.schema";
+import {AuthenticationModule} from "../authentication/authentication.module";
 
 @Module({
-    providers: [WaitingRoomGateway, RoomService, PlayerService]
+    providers: [WaitingRoomGateway, RoomService],
+    imports: [
+        AuthenticationModule,
+        MongooseModule.forFeature([{ name: Room.name, schema: RoomSchema }])
+    ],
+    exports: [WaitingRoomGateway]
 })
 export class WaitingRoomModule {
 
