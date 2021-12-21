@@ -14,6 +14,9 @@ export class WsGuard implements  CanActivate {
         if (!player) {
             return false
         }
+
+        const request = context.switchToHttp().getRequest()
+        request.player = player
         return true;
     }
 

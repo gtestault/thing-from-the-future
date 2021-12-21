@@ -13,6 +13,8 @@ import {NEW_ROOM_ACTION} from "./actions/actions";
 import {RoomService} from "./room.service";
 import {NewRoomDTO} from "./dto/new-room";
 import {WsGuard} from "../authentication/guards/ws.guard";
+import {PlayerFetcher} from "../authentication/decorators/player-fetcher";
+import {Player} from "../player/schemas/player.schema";
 
 @UseFilters(new BadRequestTransformationFilter())
 @UseFilters(new BaseWsExceptionFilter())
@@ -27,13 +29,18 @@ import {WsGuard} from "../authentication/guards/ws.guard";
 export class WaitingRoomGateway {
     constructor(private roomService: RoomService) {
     }
+
     @WebSocketServer()
     server: Server;
     private readonly logger = new Logger(WaitingRoomGateway.name);
 
     @SubscribeMessage(NEW_ROOM_ACTION)
-    async newRoom(@MessageBody() newRoom: NewRoomDTO, @ConnectedSocket() s: Socket) {
-        //await this.roomService.createRoom(player)
+    async newRoom(
+        @MessageBody() newRoom: NewRoomDTO,
+        @ConnectedSocket() s: Socket,
+        @PlayerFetcher() p: Player
+    ) {
+        this.logger.log(`create room requset from ${p._id}`)
         return
     }
 }
