@@ -37,6 +37,7 @@
     "rxjs": "^7.2.0",
     "socket.io": "^4.4.0",
     "socket.io-redis": "^6.1.1",
+    "uuid": "^8.3.2",
     "xkcd-password": "^2.0.0"
   },
   "devDependencies": {
