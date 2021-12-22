@@ -20,12 +20,23 @@ export class RoomService {
         const passphrase = await (new xkcd()).generate();
         const roomId = passphrase.join('-')
         const room = new this.roomModel({_id: roomId, admin: player})
+        await room.save()
         this.logger.log(`created new room with id: ${roomId} with admin ${player.username}`)
         return roomId
     }
-    async joinRoom(player: Player, roomId: string) {
+    async joinRoom(roomId: string, player: Player) {
         let room = await this.roomModel.findById(roomId).exec()
-        room.players = [...room.players, player]
+        room.players.push(player)
         await room.save()
+    }
+
+    async leaveRoom(roomId: string, player: Player) {
+        let room = await this.roomModel.findById(roomId).exec()
+        room.players = room.players.filter(p => p._id != player._id)
+        await room.save()
+    }
+    async getPlayers(roomId: string): Promise<Player[]> {
+        let room = await this.roomModel.findById(roomId).exec()
+        return room.players
     }
 }

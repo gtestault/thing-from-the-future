@@ -9,12 +9,13 @@ import {
 import {Server, Socket} from 'socket.io';
 import {Logger, UseFilters, UseGuards, UsePipes, ValidationPipe} from "@nestjs/common";
 import {BadRequestTransformationFilter} from "./filters/bad-request-transformation";
-import {NEW_ROOM_ACTION} from "./actions/actions";
+import {JOIN_ROOM_ACTION, NEW_ROOM_ACTION} from "./actions/actions";
 import {RoomService} from "./room.service";
 import {NewRoomDTO} from "./dto/new-room";
 import {WsGuard} from "../authentication/guards/ws.guard";
 import {PlayerFetcher} from "../authentication/decorators/player-fetcher";
 import {Player} from "../player/schemas/player.schema";
+import {JoinRoomDto} from "./dto/join-room-dto";
 
 @UseFilters(new BadRequestTransformationFilter())
 @UseFilters(new BaseWsExceptionFilter())
@@ -40,7 +41,16 @@ export class WaitingRoomGateway {
         @ConnectedSocket() s: Socket,
         @PlayerFetcher() p: Player
     ) {
-        this.logger.log(`create room requset from ${p._id}`)
-        return
+        this.logger.log(`create room request from ${p._id}`)
+        return await this.roomService.createRoom(p)
+    }
+
+    @SubscribeMessage(JOIN_ROOM_ACTION)
+    async joinRoom(
+        @MessageBody() joinRoom: JoinRoomDto,
+        @ConnectedSocket() s: Socket,
+        @PlayerFetcher() p: Player
+    ) {
+        return await this.roomService.joinRoom(joinRoom.roomId, p)
     }
 }
