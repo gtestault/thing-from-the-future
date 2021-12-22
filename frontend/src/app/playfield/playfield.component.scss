@@ -1,0 +1,20 @@
+@import './../../colors';
+@import './../../fonts';
+
+:host {
+  display: grid;
+  grid-template-rows: auto auto auto auto;
+  justify-items: center;
+  grid-row-gap: 2rem;
+  height: 97vh;
+}
+
+.game-title {
+  color: white;
+  font-family: 'Bebas Neue', cursive;
+  text-align: center;
+}
+
+app-players-cards {
+  align-self: end;
+}

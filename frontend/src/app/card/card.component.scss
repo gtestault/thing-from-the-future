@@ -1,0 +1,61 @@
+@import './../../colors';
+@import './../../fonts';
+
+.card {
+  width: 8rem;
+  height: 10rem;
+  border: solid black 0.25rem;
+  border-radius: 1rem;
+  text-align: center;
+  text-transform: uppercase;
+  padding: 0.5rem 0 0.5rem 0;
+  font-size: large;
+}
+
+.card-object {
+  background-color: $tftf-red;
+}
+
+.card-mood {
+ background-color: $tftf-violet;
+}
+
+.card-terrain {
+  background-color: $tftf-blue;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+}
+
+.card-arc {
+ background-color: $tftf-green
+}
+
+.card-category {
+  font-family: 'Cabin', sans-serif;
+  color: white;
+}
+
+.card-term {
+  font-family: 'Bebas Neue', cursive;
+  color: black;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-line {
+  stroke-width: 2px;
+}
+
+.turn-around {
+  transform: (180deg);
+  /* Safari */
+  -webkit-transform: rotate(180deg);
+
+  /* Firefox */
+  -moz-transform: rotate(180deg);
+  align-self: end;
+}
+
+.non-display {
+  display: none;
+}

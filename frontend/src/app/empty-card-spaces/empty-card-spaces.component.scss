@@ -1,0 +1,31 @@
+@import './../../colors';
+@import './../../fonts';
+
+:host {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+}
+
+.card {
+  width: 7rem;
+  height: 10rem;
+  opacity: 0.3;
+  border-radius: 1rem;
+  margin: 0 1rem 0 1rem;
+}
+
+.card-object {
+  background-color: $tftf-red;
+}
+
+.card-mood {
+  background-color: $tftf-violet;
+}
+
+.card-terrain {
+  background-color: $tftf-blue;
+}
+
+.card-arc {
+  background-color: $tftf-green
+}
