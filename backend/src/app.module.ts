@@ -5,11 +5,13 @@ import {WaitingRoomModule} from './waiting-room/waiting-room.module';
 import {MongooseModule} from '@nestjs/mongoose';
 import { PlayerModule } from './player/player.module';
 import {PlayerController} from "./player/player.controller";
+import {ScheduleModule} from "@nestjs/schedule";
 
 
 @Module({
     imports: [
         MongooseModule.forRoot('mongodb://root:secret@localhost', {dbName: "nest"}),
+        ScheduleModule.forRoot(),
         WaitingRoomModule,
         PlayerModule,
     ],

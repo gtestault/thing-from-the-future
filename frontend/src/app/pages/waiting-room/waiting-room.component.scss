@@ -1,0 +1,41 @@
+@import '../../../fonts';
+@import '../../../colors';
+
+.game-title {
+  color: white;
+  font-size: 36pt;
+  font-family: 'Bebas Neue', cursive;
+  text-align: center;
+}
+
+.card {
+  padding: 2rem 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: $tft-light-orange;
+  border-radius: 1rem;
+}
+
+.container {
+  gap: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.waiting-room-title {
+  margin-top: 0;
+  color: $tftf-dark-orange;
+  font-size: 24pt;
+  font-family: 'Bebas Neue', cursive;
+  text-align: center;
+}
+.waiting-room-option-buttons {
+  display: flex;
+  gap: 2rem;
+  button {
+    text-transform: uppercase;
+    color: white;
+  }
+}

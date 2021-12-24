@@ -8,6 +8,8 @@ export class Player {
    _id: string
    @Prop()
    username: string
+   @Prop()
+   roomId: string
 }
 
 export const PlayerSchema = SchemaFactory.createForClass(Player);

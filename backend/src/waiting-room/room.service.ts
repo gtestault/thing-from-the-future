@@ -26,14 +26,25 @@ export class RoomService {
     }
     async joinRoom(roomId: string, player: Player) {
         let room = await this.roomModel.findById(roomId).exec()
-        room.players.push(player)
+        room.players = [...room.players, player]
         await room.save()
+    }
+
+    async deleteRoom(roomId: string) {
+        await this.roomModel.findByIdAndDelete(roomId).exec()
+    }
+
+    async allRooms(): Promise<Room[]> {
+        return await this.roomModel.find({}).populate('players').exec()
     }
 
     async leaveRoom(roomId: string, player: Player) {
         let room = await this.roomModel.findById(roomId).exec()
         room.players = room.players.filter(p => p._id != player._id)
         await room.save()
+    }
+    getPlayerRoom(player: Player) {
+
     }
     async getPlayers(roomId: string): Promise<Player[]> {
         let room = await this.roomModel.findById(roomId).exec()

@@ -16,6 +16,11 @@ import {WsGuard} from "../authentication/guards/ws.guard";
 import {PlayerFetcher} from "../authentication/decorators/player-fetcher";
 import {Player} from "../player/schemas/player.schema";
 import {JoinRoomDto} from "./dto/join-room-dto";
+import {Interval} from "@nestjs/schedule";
+import {WaitingRoomTickDTO} from "./dto/waiting-room-tick-dto";
+import * as _ from "lodash"
+
+const NAMESPACE = "waiting-room"
 
 @UseFilters(new BadRequestTransformationFilter())
 @UseFilters(new BaseWsExceptionFilter())
@@ -25,7 +30,7 @@ import {JoinRoomDto} from "./dto/join-room-dto";
     cors: {
         origin: '*',
     },
-    namespace: "waiting-room"
+    namespace: NAMESPACE
 })
 export class WaitingRoomGateway {
     constructor(private roomService: RoomService) {
@@ -42,7 +47,10 @@ export class WaitingRoomGateway {
         @PlayerFetcher() p: Player
     ) {
         this.logger.log(`create room request from ${p._id}`)
-        return await this.roomService.createRoom(p)
+        const roomId = await this.roomService.createRoom(p)
+        await this.roomService.joinRoom(roomId, p)
+        s.join(roomId)
+        return roomId
     }
 
     @SubscribeMessage(JOIN_ROOM_ACTION)
@@ -51,6 +59,24 @@ export class WaitingRoomGateway {
         @ConnectedSocket() s: Socket,
         @PlayerFetcher() p: Player
     ) {
-        return await this.roomService.joinRoom(joinRoom.roomId, p)
+        await this.roomService.joinRoom(joinRoom.roomId, p)
+        s.join(joinRoom.roomId)
+        return
+    }
+
+    @Interval(1000)
+    async waitingRoomTick() {
+        const rooms = await this.roomService.allRooms()
+        for (const room of rooms) {
+            // @ts-ignore
+            const roomsAdapter = this.server.adapter.rooms
+            if (!roomsAdapter.get(room._id) || roomsAdapter.get(room._id).length == 0) {
+                this.roomService.deleteRoom(room._id)
+                continue
+            }
+            const playerInfo = room.players.map(p => _.pick(p, "username"))
+            const tick: WaitingRoomTickDTO = {players: playerInfo}
+            this.server.to(room._id).emit('update', JSON.stringify(tick))
+        }
     }
 }
