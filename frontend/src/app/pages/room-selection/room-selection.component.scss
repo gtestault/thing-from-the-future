@@ -11,7 +11,6 @@
 .card {
   padding: 2rem 4rem;
   display: flex;
-  gap: 1rem;
   flex-direction: column;
   align-items: center;
   background-color: $tft-light-orange;
@@ -25,40 +24,18 @@
   align-items: center;
 }
 
-.waiting-room-title {
-  margin: 0;
-  align-self: start;
+.room-selection-title {
+  margin-top: 0;
   color: $tftf-dark-orange;
   font-size: 24pt;
   font-family: 'Bebas Neue', cursive;
   text-align: center;
 }
-.waiting-room-option-buttons {
+.room-selection-option-buttons {
   display: flex;
   gap: 2rem;
   button {
     text-transform: uppercase;
     color: white;
   }
-}
-
-.username {
-  text-align: left;
-  font-size: 16pt;
-}
-
-
-.player-list {
-  align-self: start;
-}
-
-.player-list-item {
-  margin-left: -16px; // hack to remove padding on mat-list-item
-  span {
-    margin-right: 0.5rem;
-  }
-}
-
-.own-username {
-  font-weight: bold;
 }

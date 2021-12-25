@@ -34,7 +34,7 @@ export class PlayerService {
   }
 
   getUsername(): string | null  {
-    return this.playerId
+    return this.username
   }
   getPlayerId(): string | null  {
     return this.playerId

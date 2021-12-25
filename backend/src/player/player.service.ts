@@ -17,14 +17,9 @@ export class PlayerService {
         return _id
     }
 
-    async joinRoom(playerId: string, roomId: string) {
+    async setPlayerSocketId(playerId: string, socketId: string) {
         let player = await this.playerModel.findById(playerId).exec()
-        player.roomId = roomId
-        await player.save()
-    }
-    async leaveRoom(playerId: string) {
-        let player = await this.playerModel.findById(playerId).exec()
-        player.roomId = ""
+        player.socketId = socketId
         await player.save()
     }
 

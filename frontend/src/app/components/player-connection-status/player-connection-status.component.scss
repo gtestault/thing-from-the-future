@@ -1,0 +1,13 @@
+@import '../../../colors';
+
+.connection-status-container {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  background-color: $tftf-green;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+}

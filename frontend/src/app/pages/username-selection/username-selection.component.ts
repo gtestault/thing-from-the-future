@@ -2,8 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {PlayerService} from "../../services/player.service";
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {Router} from "@angular/router";
-import {WAITING_ROOM_PATH} from "../../routes";
+import {ActivatedRoute, Router} from "@angular/router";
+import {ROOM_SELECTION_PATH, WAITING_ROOM_PATH} from "../../routes";
+import {showErrorSnackbar} from "../../utils/snackbar";
 
 
 @Component({
@@ -16,17 +17,32 @@ export class UsernameSelectionComponent implements OnInit {
   usernameForm = new FormGroup({
     username: new FormControl('', [Validators.required, Validators.minLength(4), Validators.pattern(this.validPattern)])
   })
+  requestedRoomId: string | null = null
 
   constructor(
     private _playerService: PlayerService,
     private _snackBar: MatSnackBar,
-    private _router: Router
+    private _router: Router,
+    private _route: ActivatedRoute
   ) {
   }
 
   ngOnInit(): void {
+    this._route.queryParams.subscribe(params => {
+      if (params["roomId"]) {
+        this.requestedRoomId = params["roomId"]
+      }
+    });
     if (this._playerService.isRegistered()) {
-      this._router.navigateByUrl(WAITING_ROOM_PATH)
+      this.redirectToRoomSelection()
+    }
+  }
+
+  private redirectToRoomSelection() {
+    if (this.requestedRoomId) {
+      this._router.navigateByUrl(`${WAITING_ROOM_PATH}/${this.requestedRoomId}`)
+    } else {
+      this._router.navigateByUrl(ROOM_SELECTION_PATH)
     }
   }
 
@@ -35,11 +51,9 @@ export class UsernameSelectionComponent implements OnInit {
     try {
       await this._playerService.registerPlayer(requestedUsername)
       this._snackBar.open(`Your username has been set`, "OK", {duration: 4000, panelClass: "success-snackbar"})
+      this.redirectToRoomSelection()
     } catch (e) {
-      this._snackBar.open(`Couldn't set username: ${e.toString()}`, "OK", {
-        duration: 4000,
-        panelClass: "error-snackbar"
-      })
+      showErrorSnackbar(this._snackBar, `Couldn't set username: ${e.toString()}`)
     }
   }
 

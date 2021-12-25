@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  playerApiURL: "http://localhost:3001/player/"
+  playerApiURL: "http://localhost:3001/player/",
+  frontendRoot: "http://localhost:4200",
+  socketIoUrl: "http://localhost:3001/"
 };
 
 /*

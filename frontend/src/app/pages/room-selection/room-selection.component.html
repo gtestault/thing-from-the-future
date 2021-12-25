@@ -1,0 +1,11 @@
+<div class="container">
+  <app-player-connection-status></app-player-connection-status>
+  <h1 class="game-title">The Thing From The Future</h1>
+  <div class="card">
+    <h2 class="room-selection-title">Create or join room</h2>
+    <div class="room-selection-option-buttons">
+      <button mat-raised-button color="primary" (click)="this.onCreateRoom()">create room</button>
+      <button mat-raised-button color="accent" (click)="this.onJoinRoom()">join existing room</button>
+    </div>
+  </div>
+</div>

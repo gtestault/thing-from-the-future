@@ -1,10 +1,20 @@
 <div class="container">
   <h1 class="game-title">The Thing From The Future</h1>
+  <app-player-connection-status></app-player-connection-status>
   <div class="card">
-    <h2 class="waiting-room-title">Waiting Room</h2>
+    <h2 class="waiting-room-title">Waiting room</h2>
+    <mat-list class="player-list" role="list">
+      <mat-list-item *ngFor="let player of players"
+                     class="player-list-item"
+                     content
+                     role="listitem">
+        <span [class.own-username]="player.username === ownUsername" class="username">{{player.username}}</span>
+        <mat-icon *ngIf="player.username === ownUsername">person</mat-icon>
+      </mat-list-item>
+    </mat-list>
     <div class="waiting-room-option-buttons">
-      <button mat-raised-button color="primary">create room</button>
-      <button mat-raised-button color="accent">join existing room</button>
+      <button mat-raised-button color="primary" (click)="onInvitePlayers()">invite new players</button>
+      <button mat-raised-button color="accent">start game</button>
     </div>
   </div>
 </div>

@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Invite players</h1>
+<div class="dialog-content" mat-dialog-content>
+  <mat-form-field class="input" appearance="fill">
+    <mat-label>room name</mat-label>
+    <input readonly matInput autocomplete="off" type="text" value="{{roomLink}}">
+    <button [cdkCopyToClipboard]="roomLink" matSuffix mat-icon-button aria-label="Copy">
+      <mat-icon>content_copy</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+<div class="action-buttons" mat-dialog-actions>
+  <button mat-button (click)="this.onCloseClick()">Close</button>
+</div>

@@ -9,7 +9,7 @@ export class Player {
    @Prop()
    username: string
    @Prop()
-   roomId: string
+   socketId: string
 }
 
 export const PlayerSchema = SchemaFactory.createForClass(Player);
