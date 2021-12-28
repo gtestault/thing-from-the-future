@@ -11,7 +11,6 @@ import { CardFieldComponent } from './components/card-field/card-field.component
 import { TurnIndicatorComponent } from './components/turn-indicator/turn-indicator.component';
 import { EmptyCardSpaceComponent } from './components/empty-card-space/empty-card-space.component';
 import { EmptyCardSpacesComponent } from './components/empty-card-spaces/empty-card-spaces.component';
-import { UsernameSelectionComponent } from './components/username-selection/username-selection.component';
 
 @NgModule({
   declarations: [
