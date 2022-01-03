@@ -28,7 +28,7 @@ export class PlayerService {
 
   currentPlayersID = new BehaviorSubject<number>(0);
 
-  myID = 0;
+  myID = 1;
 
   constructor() { }
 
@@ -38,6 +38,18 @@ export class PlayerService {
 
   getPlayers(): Player[] {
     return this.players;
+  }
+
+  getPlayersName(id: number) {
+    let player;
+
+   player = this.players.find(player => player.id === id);
+
+   if (player) {
+     return player.name;
+   } else {
+     return '';
+   }
   }
 
   changeCurrentPlayer() {

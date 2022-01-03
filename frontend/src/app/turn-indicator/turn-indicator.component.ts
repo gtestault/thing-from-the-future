@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {PlayerService} from '../services/player.service';
 
 @Component({
   selector: 'app-turn-indicator',
@@ -7,9 +8,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TurnIndicatorComponent implements OnInit {
 
-  constructor() { }
+  currentPlayer = '';
+
+  constructor(private playerService: PlayerService) { }
 
   ngOnInit(): void {
+    this.playerService.currentPlayersID.subscribe(id => {
+      this.getCurrentPlayer(id);
+    })
   }
+
+  getCurrentPlayer(id: number) {
+    if (id === this.playerService.myID) {
+      this.currentPlayer = 'your';
+    } else {
+      this.currentPlayer = this.playerService.getPlayersName(id);
+    }
+  }
+
+
 
 }
