@@ -1,0 +1,26 @@
+@import './../../colors';
+@import './../../fonts';
+
+:host {
+  position: absolute;
+  display: block;
+  left: 0;
+  background-color: $tftf-light-yellow;
+
+  width: 10rem;
+  height: 20rem;
+  border-radius: 0 15px 15px 0;
+
+}
+
+.title {
+  font-family: 'Bebas Neue', cursive;
+  color: $tftf-orange;
+  text-align: center;
+}
+
+.player {
+  color: black;
+  font-family: 'Cabin', cursive;
+  font-size: large;
+}
