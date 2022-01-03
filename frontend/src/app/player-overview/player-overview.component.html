@@ -1,2 +1,2 @@
 <h2 class="title">Player</h2>
-<div class="player" *ngFor="let player of players">{{player.name}}</div>
+<div class="player" *ngFor="let player of players">{{player.name}}<img src="assets/person.svg" *ngIf="isMe(player.id)"></div>

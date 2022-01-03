@@ -7,7 +7,7 @@ import {BehaviorSubject} from 'rxjs';
 })
 export class PlayerService {
 
-  private players: Player[] = [
+  players: Player[] = [
     {
       name: 'player1',
       id: 0
@@ -35,10 +35,6 @@ export class PlayerService {
   //TODO: Set player array, remove dummy data
 
   //TODO: set myID, remove dummy data
-
-  getPlayers(): Player[] {
-    return this.players;
-  }
 
   getPlayersName(id: number) {
     let player;
