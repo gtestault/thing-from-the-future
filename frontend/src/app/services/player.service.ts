@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Player} from '../models/Player';
+import { Player} from '../../models/Player';
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,28 +10,37 @@ export class PlayerService {
   private players: Player[] = [
     {
       name: 'player1',
-      id: 1
+      id: 0
     },
     {
       name: 'susi123',
-      id: 2
+      id: 1
     },
     {
       name: 'hello_x',
-      id: 3
+      id: 2
     },
     {
       name: 'lena92',
-      id: 4
+      id: 3
     }
-
   ]
+
+  currentPlayersID = new BehaviorSubject<number>(0);
+
+  myID = 0;
 
   constructor() { }
 
   //TODO: Set player array, remove dummy data
 
+  //TODO: set myID, remove dummy data
+
   getPlayers(): Player[] {
     return this.players;
+  }
+
+  changeCurrentPlayer() {
+    //TODO: change current player when card was played
   }
 }
