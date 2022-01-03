@@ -12,6 +12,10 @@
   font-size: large;
 }
 
+.card:hover {
+  cursor: pointer;
+}
+
 .card-object {
   background-color: $tftf-red;
 }
