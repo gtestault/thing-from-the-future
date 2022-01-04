@@ -29,4 +29,8 @@ export class PlayerOverviewComponent implements OnInit {
     return id === this.myID;
   }
 
+  isCurrentPlayer(id: number) {
+    return id === this.currentPlayersID;
+  }
+
 }

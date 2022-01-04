@@ -1,2 +1,5 @@
 <h2 class="title">Player</h2>
-<div class="player" *ngFor="let player of players">{{player.name}}<img class="person-icon" src="assets/person.svg" *ngIf="isMe(player.id)"></div>
+<div *ngFor="let player of players">
+  <img src="assets/arrow-right.svg">
+  <span [ngClass]="{'player': true, 'current-player': isCurrentPlayer(player.id)}" class="player">{{player.name}}<img class="person-icon" src="assets/person.svg" *ngIf="isMe(player.id)"></span>
+</div>
