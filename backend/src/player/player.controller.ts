@@ -1,6 +1,7 @@
-import {Body, Controller, Logger, Post, UsePipes, ValidationPipe} from "@nestjs/common";
+import {Body, Controller, Logger, Post, Res, UsePipes, ValidationPipe} from "@nestjs/common";
 import {PlayerService} from "./player.service";
 import {NewPlayerDTO} from "./dto/new-player";
+import {Response} from "express"
 
 @UsePipes(new ValidationPipe({}))
 @Controller('player')
@@ -9,9 +10,9 @@ export class PlayerController {
     constructor(private playerService: PlayerService) {
     }
     @Post()
-    async newPlayer(@Body() newPlayerDTO: NewPlayerDTO): Promise<string> {
+    async newPlayer(@Body() newPlayerDTO: NewPlayerDTO, @Res() res: Response) {
         const id = await this.playerService.newPlayer(newPlayerDTO.username)
         this.logger.log(`created new player '${newPlayerDTO.username}' with id '${id}'`)
-        return id
+        return res.json(id)
     }
 }

@@ -10,11 +10,17 @@ export class PlayerService {
     constructor(@InjectModel(Player.name) private playerModel: Model<PlayerDocument>) {}
     private readonly logger = new Logger(PlayerService.name);
 
-    async newPlayer(username: string): Promise<string> {
-        const _id = uuidv4()
+    async newPlayer(username: string) {
+        const _id: string = uuidv4().toString()
         const newPlayer = new this.playerModel({_id, username})
         await newPlayer.save()
         return _id
+    }
+
+    async setPlayerSocketId(playerId: string, socketId: string) {
+        let player = await this.playerModel.findById(playerId).exec()
+        player.socketId = socketId
+        await player.save()
     }
 
     async removePlayer(id: string) {

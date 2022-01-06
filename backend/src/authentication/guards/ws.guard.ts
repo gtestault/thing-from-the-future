@@ -1,12 +1,16 @@
 import {CanActivate, ExecutionContext, Injectable} from "@nestjs/common";
 import {PlayerService} from "../../player/player.service";
 
+export function getPlayerIdFromExecutionContext(context: ExecutionContext): string | undefined {
+    return context.switchToWs().getClient().handshake.headers.authorization
+}
+
 @Injectable()
 export class WsGuard implements  CanActivate {
     constructor(private playerService: PlayerService) {
     }
     async canActivate(context: ExecutionContext): Promise<boolean> {
-        const playerId = context.switchToWs().getClient().handshake.headers.authorization
+        const playerId = getPlayerIdFromExecutionContext(context)
         if (!playerId) {
             return false
         }

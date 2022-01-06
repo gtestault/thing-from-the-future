@@ -1,0 +1,14 @@
+<div class="container">
+  <h1 class="game-title">The Thing From The Future</h1>
+  <div class="card">
+    <h2 class="choose-username-title">choose your username</h2>
+    <form class="choose-username-form" [formGroup]="usernameForm" (ngSubmit)="onSubmit()">
+      <mat-form-field class="username-field" appearance="fill">
+        <mat-label>Username</mat-label>
+        <input matInput value="Sushi" formControlName="username">
+        <mat-error *ngIf="usernameForm.invalid">{{getErrorMessage()}}</mat-error>
+      </mat-form-field>
+      <button mat-raised-button [disabled]="usernameForm.invalid" type="submit" class="submit-button" color="primary">submit</button>
+    </form>
+  </div>
+</div>
