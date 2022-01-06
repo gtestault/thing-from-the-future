@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Player} from '../../models/Player';
 import {BehaviorSubject} from 'rxjs';
-import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
@@ -39,7 +38,6 @@ export class PlayerService {
 
   myID = 1;
 
-  constructor() { }
 
   //TODO: Set player array, remove dummy data
 
@@ -57,7 +55,7 @@ export class PlayerService {
    }
   }
 
-  changeCurrentPlayer() {
+
     //TODO: change current player when card was played
   username: string | null = null
   playerId: string | null = null
