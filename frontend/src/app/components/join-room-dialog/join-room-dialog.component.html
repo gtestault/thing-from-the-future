@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Join room</h1>
+<div class="dialog-content" mat-dialog-content>
+  <p>Which room would you like to join?</p>
+  <mat-form-field class="input" appearance="fill">
+    <mat-label>room name</mat-label>
+    <input placeholder="meshiest-mavens-drama-spait" autocomplete="off" matInput [(ngModel)]="data.roomId">
+  </mat-form-field>
+</div>
+<div class="action-buttons" mat-dialog-actions>
+  <button mat-button (click)="this.onCancelClick()">cancel</button>
+  <button mat-button [mat-dialog-close]="data.roomId" cdkFocusInitial>join room</button>
+</div>

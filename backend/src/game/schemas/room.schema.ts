@@ -9,9 +9,9 @@ export type RoomDocument = Room & Document
 export class Room {
     @Prop()
     _id: string
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Player' })
+    @Prop({ type: mongoose.Schema.Types.String, ref: 'Player' })
     admin: Player
-    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Player' }] })
+    @Prop({ type: [{ type: mongoose.Schema.Types.String, ref: 'Player' }] })
     players: Player[]
 }
 
