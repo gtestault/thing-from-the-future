@@ -1,7 +1,7 @@
 @import '../../../colors';
 @import '../../../fonts';
 
-:host {
+.container-playfield {
   display: grid;
   grid-template-rows: auto auto auto auto;
   justify-items: center;

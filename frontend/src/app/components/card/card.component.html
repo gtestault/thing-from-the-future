@@ -2,8 +2,7 @@
      [ngClass]="{'card-object': category === 'object', 'card-mood': category === 'mood',
      'card-terrain': category === 'terrain', 'card-arc': category === 'arc',
      'turn-around': turnAround}"
-     (click)="turnCard();"
-     cdkDrag>
+     (click)="turnCard();">
   <div>
     <div class="card-category">{{category}}</div>
     <div class="card-term">{{term}}</div>
