@@ -28,6 +28,7 @@ import { PlayerConnectionStatusComponent } from './components/player-connection-
 import {MatIconModule} from "@angular/material/icon";
 import { InvitePlayersDialogComponent } from './components/invite-players-dialog/invite-players-dialog.component';
 import {ClipboardModule} from "@angular/cdk/clipboard";
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import {ClipboardModule} from "@angular/cdk/clipboard";
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    FormsModule
+    FormsModule,
+    DragDropModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
