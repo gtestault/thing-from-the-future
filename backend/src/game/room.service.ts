@@ -3,13 +3,15 @@ import * as xkcd from "xkcd-password"
 import {Player} from "../player/schemas/player.schema";
 import {InjectModel} from "@nestjs/mongoose";
 import {Model} from "mongoose";
-import {Room, RoomDocument} from "./schemas/room.schema";
+import {GameState, Room, RoomDocument} from "./schemas/room.schema";
 import * as _ from "lodash"
 import {Socket} from "socket.io";
+import {Card, DeckBuilder} from "thing-from-the-future-utils/dist";
 
 @Injectable()
 export class RoomService {
     private readonly logger = new Logger(RoomService.name);
+    private static PLAYER_CARDS_COUNT = 7
     constructor(@InjectModel(Room.name) private roomModel: Model<RoomDocument>) { }
 
     /**
@@ -41,8 +43,28 @@ export class RoomService {
         room.players = [...room.players, player]
         await room.save()
     }
+
+    async startGame(roomId: string) {
+        let room = await this.roomModel.findById(roomId).populate(["players", "admin"]).exec()
+        room.gameState = GameState.PLAYING_PLAYFIELD
+        const deck = DeckBuilder.getInstance().baseDeck()
+        for (const player of room.players) {
+            let playerCards: Card[] = []
+            for (let i = 0; i++; i <= RoomService.PLAYER_CARDS_COUNT) {
+                playerCards.push(deck.drawRandom())
+            }
+            room.playerCards[player.username] = playerCards
+        }
+        room.deck = deck
+        room.playerQueue = room.players;
+        room.currentPlayer = room.playerQueue[0]
+        room.markModified("deck")
+        room.markModified("playerCards")
+        await room.save()
+    }
+
     async getRoom(roomId: string): Promise<Room> {
-        return await this.roomModel.findById(roomId).exec()
+        return await this.roomModel.findById(roomId).populate(["players", "admin"]).exec()
     }
 
     async getPlayerRoom(playerId: string): Promise<Room> {

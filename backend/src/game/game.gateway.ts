@@ -8,9 +8,9 @@ import {
 import {Server, Socket} from 'socket.io';
 import {Logger, UseFilters, UseGuards, UsePipes, ValidationPipe} from "@nestjs/common";
 import {BadRequestTransformationFilter} from "./filters/bad-request-transformation";
-import {JOIN_ROOM_ACTION, NEW_ROOM_ACTION} from "./actions/actions";
+import {JOIN_ROOM_ACTION, NEW_ROOM_ACTION, START_GAME_ACTION} from "./actions/actions";
 import {RoomService} from "./room.service";
-import {NewRoomDTO} from "./dto/new-room";
+import {EmptyObjectDTO} from "./dto/empty-object-dto";
 import {WsGuard} from "../authentication/guards/ws.guard";
 import {PlayerFetcher} from "../authentication/decorators/player-fetcher";
 import {Player} from "../player/schemas/player.schema";
@@ -43,7 +43,7 @@ export class GameGateway implements OnGatewayConnection<Socket>, OnGatewayDiscon
 
     @SubscribeMessage(NEW_ROOM_ACTION)
     async newRoom(
-        @MessageBody() newRoom: NewRoomDTO,
+        @MessageBody() newRoom: EmptyObjectDTO,
         @ConnectedSocket() s: Socket,
         @PlayerFetcher() p: Player
     ) {
@@ -67,6 +67,16 @@ export class GameGateway implements OnGatewayConnection<Socket>, OnGatewayDiscon
         s.join(joinRoom.roomId)
         this.logger.log(`'${p.username}' joined room '${joinRoom.roomId}'`)
         return OkResponse
+    }
+
+    @SubscribeMessage(START_GAME_ACTION)
+    async startGame(
+        @MessageBody() emptyObjectDTO: EmptyObjectDTO,
+        @ConnectedSocket() s: Socket,
+        @PlayerFetcher() p: Player
+    ) {
+        const playerRoom = await this.roomService.getPlayerRoom(p._id)
+        await this.roomService.startGame(playerRoom._id)
     }
 
     @Interval(1000)
