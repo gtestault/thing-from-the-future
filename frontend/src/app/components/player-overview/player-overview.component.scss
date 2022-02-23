@@ -1,0 +1,45 @@
+@import './../../../colors';
+@import './../../../fonts';
+@import './../../../breakpoints';
+
+:host {
+  position: absolute;
+  display: none;
+  left: 0;
+  background-color: $tftf-light-yellow;
+  top: 10%;
+  width: 10rem;
+  height: 20rem;
+  border-radius: 0 15px 15px 0;
+  @include lg {
+    display: block;
+  }
+}
+
+.title {
+  font-family: 'Bebas Neue', cursive;
+  color: $tftf-orange;
+  text-align: center;
+}
+
+.player {
+  color: black;
+  font-family: 'Cabin', cursive;
+  font-size: large;
+  margin-bottom: 0.5rem;
+}
+
+.person-icon {
+  margin-left: 0.5rem;
+}
+
+.current-player {
+  font-weight: 1000;
+  font-size: larger;
+}
+
+.arrow-invisible {
+  visibility: hidden;
+}
+
+
