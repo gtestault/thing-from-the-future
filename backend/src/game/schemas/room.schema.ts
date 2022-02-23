@@ -2,7 +2,7 @@ import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
 import * as mongoose from "mongoose";
 import {Player} from "../../player/schemas/player.schema";
 import {Document} from "mongoose";
-import {Card, Deck} from "thing-from-the-future-utils/dist";
+import {Card, Deck} from "thing-from-the-future-utils";
 
 export type RoomDocument = Room & Document
 
@@ -31,7 +31,7 @@ export class Room {
     currentPlayer: Player
     @Prop({ type: [{ type: mongoose.Schema.Types.String, ref: 'Player' }] })
     playerQueue: Player[]
-    @Prop({type: mongoose.Schema.Types.Mixed})
+    @Prop({type: mongoose.Schema.Types.Mixed, default: null})
     playerCards: PlayerCards
     @Prop({type: mongoose.Schema.Types.Mixed})
     deck: Deck

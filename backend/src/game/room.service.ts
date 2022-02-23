@@ -6,7 +6,7 @@ import {Model} from "mongoose";
 import {GameState, Room, RoomDocument} from "./schemas/room.schema";
 import * as _ from "lodash"
 import {Socket} from "socket.io";
-import {Card, DeckBuilder} from "thing-from-the-future-utils/dist";
+import {Card, DeckBuilder} from "thing-from-the-future-utils";
 
 @Injectable()
 export class RoomService {
@@ -24,6 +24,8 @@ export class RoomService {
         const passphrase = await (new xkcd()).generate({numWords: 3});
         const roomId = passphrase.join('-')
         const room = new this.roomModel({_id: roomId, admin: player})
+        room.playerCards = {}
+        await room.markModified("playerCards")
         await room.save()
         this.logger.log(`created new room with id: ${roomId} with admin ${player.username}`)
         return roomId
@@ -45,12 +47,12 @@ export class RoomService {
     }
 
     async startGame(roomId: string) {
-        let room = await this.roomModel.findById(roomId).populate(["players", "admin"]).exec()
+        let room = await this.roomModel.findById(roomId).populate(["players", "admin", "playerCards"]).exec()
         room.gameState = GameState.PLAYING_PLAYFIELD
         const deck = DeckBuilder.getInstance().baseDeck()
         for (const player of room.players) {
             let playerCards: Card[] = []
-            for (let i = 0; i++; i <= RoomService.PLAYER_CARDS_COUNT) {
+            for (let i = 0; i < RoomService.PLAYER_CARDS_COUNT; i++) {
                 playerCards.push(deck.drawRandom())
             }
             room.playerCards[player.username] = playerCards
