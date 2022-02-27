@@ -30,9 +30,10 @@ export interface Card {
 export type CardKind = "terrain" | "arc" | "object" | "mood"
 
 export class Arc implements Card {
-    kind: CardKind = "arc"
-    scenario: ArcScenario
-    timeframe: ArcTimeframe
+    public readonly kind: CardKind = "arc"
+    public readonly scenario: ArcScenario
+    public readonly timeframe: ArcTimeframe
+
     constructor(scenario: ArcScenario, timeframe: ArcTimeframe) {
         this.scenario = scenario
         this.timeframe = timeframe
@@ -40,24 +41,25 @@ export class Arc implements Card {
 }
 
 export class Terrain implements Card {
-    kind: CardKind = "terrain";
-    name: string
+    public readonly kind: CardKind = "terrain";
+    public readonly name
     constructor(name: string) {
         this.name = name;
     }
 }
 
 export class GameObject implements Card {
-    kind: CardKind = "object"
-    name: string
+    public readonly kind: CardKind = "object"
+    public readonly name: string
     constructor(name: string) {
         this.name = name;
     }
 }
 
 export class Mood implements Card {
-    kind: CardKind = "mood"
-    name: string
+    public readonly kind: CardKind = "mood"
+    public readonly name: string
+
     constructor(name: string) {
         this.name = name;
     }

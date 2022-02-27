@@ -8,7 +8,7 @@ import {
 import {Server, Socket} from 'socket.io';
 import {Logger, UseFilters, UseGuards, UsePipes, ValidationPipe} from "@nestjs/common";
 import {BadRequestTransformationFilter} from "./filters/bad-request-transformation";
-import {JOIN_ROOM_ACTION, NEW_ROOM_ACTION, START_GAME_ACTION} from "./actions/actions";
+import {JOIN_ROOM_ACTION, NEW_ROOM_ACTION, PLAY_CARD_ACTION, START_GAME_ACTION} from "./actions/actions";
 import {RoomService} from "./room.service";
 import {EmptyObjectDTO} from "./dto/empty-object-dto";
 import {WsGuard} from "../authentication/guards/ws.guard";
@@ -22,6 +22,7 @@ import {PlayerService} from "../player/player.service";
 import {RoomNotFoundException} from "./exceptions/room-not-found-exception";
 import {WsAckExceptionFilter} from "./filters/ws-ack-exception-filter";
 import {OkResponse} from "./responses/ok-response";
+import {PlayCardDto} from "./dto/play-card-dto";
 
 @UseFilters(new BadRequestTransformationFilter())
 @UseFilters(new WsAckExceptionFilter())
@@ -76,7 +77,18 @@ export class GameGateway implements OnGatewayConnection<Socket>, OnGatewayDiscon
         @PlayerFetcher() p: Player
     ) {
         const playerRoom = await this.roomService.getPlayerRoom(p._id)
-        await this.roomService.startGame(playerRoom._id)
+        await this.roomService.startGame(playerRoom._id, p)
+        return OkResponse
+    }
+
+    @SubscribeMessage(PLAY_CARD_ACTION)
+    async playCardAction(
+        @MessageBody() playCardDTO: PlayCardDto,
+        @ConnectedSocket() s: Socket,
+        @PlayerFetcher() p: Player
+    ) {
+        await this.roomService.playCard(playCardDTO.roomId, p, playCardDTO.card)
+        return OkResponse
     }
 
     @Interval(1000)
@@ -88,8 +100,17 @@ export class GameGateway implements OnGatewayConnection<Socket>, OnGatewayDiscon
                 //this.roomService.deleteRoom(room._id)
                 continue
             }
-            const playerInfo = room.players.map(p => _.pick(p, "username"))
-            const tick: GameTickDTO = {roomId: room._id, players: playerInfo}
+            const currentPLayer = room.currentPlayer
+            const tick: GameTickDTO = {
+                roomId: room._id,
+                players: room.players.map(p => _.pick(p, "username")),
+                playerCards: room.playerCards,
+                currentPlayer: currentPLayer,
+                playerQueue: room.playerQueue,
+                timeRemaining: room.timeRemaining,
+                admin: room.admin,
+            }
+            this.roomService.decreaseTime(room._id)
             this.server.to(room._id).emit('update', JSON.stringify(tick))
         }
     }

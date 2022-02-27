@@ -17,7 +17,7 @@ export type PlayerCards = {
     [username: string]: Card[]
 }
 
-@Schema()
+@Schema({minimize: false})
 export class Room {
     @Prop()
     _id: string
@@ -31,8 +31,12 @@ export class Room {
     currentPlayer: Player
     @Prop({ type: [{ type: mongoose.Schema.Types.String, ref: 'Player' }] })
     playerQueue: Player[]
-    @Prop({type: mongoose.Schema.Types.Mixed, default: null})
+    @Prop({type: mongoose.Schema.Types.Number, default: 0})
+    timeRemaining: number
+    @Prop({type: mongoose.Schema.Types.Mixed})
     playerCards: PlayerCards
+    @Prop({type: mongoose.Schema.Types.Mixed, default: []})
+    playedCards: Card[]
     @Prop({type: mongoose.Schema.Types.Mixed})
     deck: Deck
 }

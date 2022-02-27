@@ -1,13 +1,14 @@
 {
   "name": "thing-from-the-future-utils",
-  "version": "1.4.0",
+  "version": "1.13.0",
   "description": "",
   "type": "module",
   "source": "src/index.ts",
-  "main": "./dist/index.cjs",
+  "main": "./index.cjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "microbundle"
+    "build": "microbundle",
+    "pack": "npm version minor && npm run build"
   },
   "author": "",
   "license": "ISC",
@@ -15,5 +16,19 @@
     "microbundle": "^0.14.2",
     "typescript": "^4.5.2"
   },
-  "files": ["dist"]
+  "files": [
+    "index.umd.js.map",
+    "index.umd.js",
+    "index.esm.js.map",
+    "index.esm.js",
+    "index.cjs",
+    "index.cjs.map",
+    "index.d.ts",
+    "index.modern.js.map",
+    "index.modern.js",
+    "package.json"
+  ],
+  "dependencies": {
+    "copyfiles": "^2.4.1"
+  }
 }

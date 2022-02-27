@@ -1,6 +1,14 @@
-import {Player} from "./player";
+import {Player} from './player';
+import {Card} from 'thing-from-the-future-utils';
 
+
+export type PlayerCards = {[username: string]: Card};
 export interface GameTick {
-  roomId: string
-  players: Player[]
+  timeRemaining: number;
+  roomId: string;
+  players: Player[];
+  playerQueue: Player[];
+  playerCards: PlayerCards;
+  currentPlayer: Player;
+  admin: Player;
 }
