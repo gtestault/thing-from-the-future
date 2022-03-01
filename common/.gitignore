@@ -1,1 +1,10 @@
 node_modules
+index.cjs
+index.cjs.map
+index.d.ts
+index.esm.js
+index.esm.js.map
+index.modern.js
+index.modern.js.map
+index.umd.js
+index.umd.js.map

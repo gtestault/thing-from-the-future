@@ -1,16 +1,16 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {UsernameSelectionComponent} from "./pages/username-selection/username-selection.component";
-import {PlayfieldComponent} from "./pages/playfield/playfield.component";
-import {PlayerRegisteredGuard} from "./guards/player-registered.guard";
-import {RoomSelectionComponent} from "./pages/room-selection/room-selection.component";
+import {UsernameSelectionComponent} from './pages/username-selection/username-selection.component';
+import {PlayfieldComponent} from './pages/playfield/playfield.component';
+import {PlayerRegisteredGuard} from './guards/player-registered.guard';
+import {RoomSelectionComponent} from './pages/room-selection/room-selection.component';
 import {
   PLAYFIELD_PATH,
   ROOM_SELECTION_PATH, WAITING_ROOM_JOIN_PATH,
   WAITING_ROOM_PATH,
   WAITING_ROOM_PATH_ROOM_ID_VARIABLE
-} from "./routes";
-import {WaitingRoomComponent} from "./pages/waiting-room/waiting-room.component";
+} from './routes';
+import {WaitingRoomComponent} from './pages/waiting-room/waiting-room.component';
 
 
 const routes: Routes = [
