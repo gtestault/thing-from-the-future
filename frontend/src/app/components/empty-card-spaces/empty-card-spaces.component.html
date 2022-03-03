@@ -1,5 +1,4 @@
-
-<div class="container-empty-card-spaces" cdkDrop #empty="cdkDrop" [cdkDropData]="cards" [cdkDropConnectedTo]="[new]" (cdkDropDropped)="drop($event)"  >
+<div class="container-empty-card-spaces">
   <div *ngFor="let card of cards"></div>
   <div class="card card-arc"></div>
   <div class="card card-terrain"></div>
