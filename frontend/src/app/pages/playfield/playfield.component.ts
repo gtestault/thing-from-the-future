@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Card} from '../../../models/Card';
 import {Subscription} from 'rxjs';
 import {Player} from '../../services/models/player';
 import {PlayerService} from '../../services/player.service';

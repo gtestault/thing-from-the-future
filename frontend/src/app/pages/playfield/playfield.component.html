@@ -1,7 +1,8 @@
-<div class="container-playfield" cdkDropListGroup>
+<div class="container-playfield">
 <h1 class="game-title">The Thing From The Future</h1>
 <app-empty-card-spaces></app-empty-card-spaces>
 <app-turn-indicator></app-turn-indicator>
 <app-players-cards></app-players-cards>
 <app-player-overview></app-player-overview>
 </div>
+<app-timer [counterStart]="60"></app-timer>

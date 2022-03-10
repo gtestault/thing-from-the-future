@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-timer',
@@ -7,9 +7,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TimerComponent implements OnInit {
 
-  constructor() { }
+  @Input() counterStart: number = 0;
 
-  ngOnInit(): void {
+  constructor() {
+
   }
 
+  ngOnInit(): void {
+    this.countDown();
+  }
+
+  countDown() {
+    let intervalId = setInterval(() => {
+      this.counterStart = this.counterStart - 1;
+      if(this.counterStart === 0) clearInterval(intervalId)
+    }, 1000)
+  }
 }
