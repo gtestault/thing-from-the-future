@@ -1,12 +1,11 @@
 import {Player} from "../../player/schemas/player.schema";
-import {PlayerCards} from "../schemas/room.schema";
+import {PlayerDataDto} from "./player-data-dto";
+import {Card} from "thing-from-the-future-utils";
 
 export class GameTickDTO {
     roomId: string
     admin: Player
-    players: Player[]
-    playerCards: PlayerCards
-    playerQueue: Player[]
-    currentPlayer: Player
+    playedCards: Card[]
+    players: PlayerDataDto[]
     timeRemaining: number
 }

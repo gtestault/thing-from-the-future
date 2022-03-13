@@ -23,6 +23,8 @@ import {RoomNotFoundException} from "./exceptions/room-not-found-exception";
 import {WsAckExceptionFilter} from "./filters/ws-ack-exception-filter";
 import {OkResponse} from "./responses/ok-response";
 import {PlayCardDto} from "./dto/play-card-dto";
+import {PlayerDataDto} from "./dto/player-data-dto";
+import {PlayerCards} from "./schemas/room.schema";
 
 @UseFilters(new BadRequestTransformationFilter())
 @UseFilters(new WsAckExceptionFilter())
@@ -100,16 +102,7 @@ export class GameGateway implements OnGatewayConnection<Socket>, OnGatewayDiscon
                 //this.roomService.deleteRoom(room._id)
                 continue
             }
-            const currentPLayer = room.currentPlayer
-            const tick: GameTickDTO = {
-                roomId: room._id,
-                players: room.players.map(p => _.pick(p, "username")),
-                playerCards: room.playerCards,
-                currentPlayer: currentPLayer,
-                playerQueue: room.playerQueue,
-                timeRemaining: room.timeRemaining,
-                admin: room.admin,
-            }
+            const tick: GameTickDTO = this.roomService.getGameData(room)
             this.roomService.decreaseTime(room._id)
             this.server.to(room._id).emit('update', JSON.stringify(tick))
         }
@@ -117,6 +110,7 @@ export class GameGateway implements OnGatewayConnection<Socket>, OnGatewayDiscon
     private static getPlayerIdFromSocket(socket: Socket): string | undefined {
         return socket.handshake.headers.authorization
     }
+
 
     async handleDisconnect(socket: Socket) {
         const playerId = GameGateway.getPlayerIdFromSocket(socket)

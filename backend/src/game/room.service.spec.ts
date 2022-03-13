@@ -72,7 +72,7 @@ describe('RoomService', () => {
         let roomId = await roomService.createRoom(testPlayer1)
         await roomService.joinRoom(roomId, testPlayer1, testPlayer1socket)
         await roomService.joinRoom(roomId, testPlayer2, testPlayer2socket)
-        await roomService.startGame(roomId)
+        await roomService.startGame(roomId, testPlayer1)
         const room = await roomService.getRoom(roomId)
         expect(room.gameState).toEqual(GameState.PLAYING_PLAYFIELD)
         expect(room.playerCards["test1"].length).toEqual(7)
@@ -86,8 +86,8 @@ describe('RoomService', () => {
         let roomId = await roomService.createRoom(testPlayer1)
         await roomService.joinRoom(roomId, testPlayer1, testPlayer1socket)
         await roomService.joinRoom(roomId, testPlayer2, testPlayer2socket)
-        await roomService.startGame(roomId)
-        for (let i = 0; i <= RoomService.PLAYER_TURN_TIME_SECONDS; i++)  {
+        await roomService.startGame(roomId, testPlayer1)
+        for (let i = 0; i <= RoomService.PLAYER_TURN_TIME_SECONDS + 1; i++)  {
             await roomService.decreaseTime(roomId)
         }
         let room = await roomService.getRoom(roomId)

@@ -3,16 +3,17 @@ import * as xkcd from "xkcd-password"
 import {Player} from "../player/schemas/player.schema";
 import {InjectModel} from "@nestjs/mongoose";
 import {Model} from "mongoose";
-import {GameState, Room, RoomDocument} from "./schemas/room.schema";
+import {GameState, PlayerCards, Room, RoomDocument} from "./schemas/room.schema";
 import * as _ from "lodash"
 import {Socket} from "socket.io";
-import {Arc, Card, DeckBuilder} from "thing-from-the-future-utils";
+import {Card, DeckBuilder} from "thing-from-the-future-utils";
 import {ActionNotAllowedException} from "./exceptions/action-not-allowed-exception";
 import {CardTypeAlreadyPlayedException} from "./exceptions/card-type-already-played-exception";
 import {NotYourTurnException} from "./exceptions/not-your-turn-exception";
-import {startWith} from "rxjs";
 import {CardNotOwnedException} from "./exceptions/card-not-owned-exception";
 import {RoomAdminActionException} from "./exceptions/room-admin-action-exception";
+import {PlayerDataDto} from "./dto/player-data-dto";
+import {GameTickDTO} from "./dto/game-tick-dto";
 
 @Injectable()
 export class RoomService {
@@ -116,7 +117,7 @@ export class RoomService {
         }
         let playerCards = room.playerCards[player.username]
         if (!_.find(playerCards, c => c.kind === card.kind)) {
-           throw new CardNotOwnedException()
+            throw new CardNotOwnedException()
         }
         if (_.find(room.playedCards, c => c.kind === card.kind)) {
             throw new CardTypeAlreadyPlayedException()
@@ -172,6 +173,30 @@ export class RoomService {
             return
         }
         await room.save()
+    }
+
+    getGameData(room: Room): GameTickDTO {
+        const gameData: GameTickDTO = {
+            roomId: room._id,
+            playedCards: room.playedCards,
+            players: this.getAggregatedPlayerData(room.players, room.playerQueue, room.playerCards, room.currentPlayer),
+            timeRemaining: room.timeRemaining,
+            admin: room.admin,
+        }
+        return gameData
+    }
+
+    getAggregatedPlayerData(players: Player[], playerQueue: Player[], playerCards: PlayerCards, currentPlayer: Player): PlayerDataDto[] {
+        const playerData: PlayerDataDto[] = []
+        for (let player of players) {
+            const data: PlayerDataDto = {
+                username: player.username,
+                isCurrentPlayer: currentPlayer && currentPlayer._id === player._id,
+                cards: playerCards[player.username]
+            }
+            playerData.push(data)
+        }
+        return playerData
     }
 
     async getPlayers(roomId: string): Promise<Player[]> {
