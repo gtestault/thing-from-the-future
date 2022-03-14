@@ -1,8 +1,6 @@
 import {Component, HostBinding, Input, OnInit} from '@angular/core';
 import {CardService} from '../../services/card.service';
-import {BehaviorSubject} from 'rxjs';
 import {Card} from '../../../models/Card';
-import {PlayerService} from '../../services/player.service';
 
 @Component({
   selector: 'app-card',
@@ -11,7 +9,7 @@ import {PlayerService} from '../../services/player.service';
 })
 export class CardComponent implements OnInit {
 
-  constructor(private cardService: CardService, private playerService: PlayerService) { }
+  constructor(private cardService: CardService) { }
 
   @HostBinding('style.position')
   position = 'relative';
@@ -44,8 +42,8 @@ export class CardComponent implements OnInit {
 
   playCard(category: string, term: string, time: string) {
     if (this.position === 'relative') {
-      this.position = 'absolute';
-      if (category === 'arc') {
+      if (category === 'arc' && !this.playedCards[0].category) {
+        this.position = 'absolute';
         this.dragPosition = {x: 120, y: -280};
         this.playedCards[0] = {
           category: category,
@@ -53,7 +51,8 @@ export class CardComponent implements OnInit {
           time: time,
         };
         this.cardService.playedCards.next(this.playedCards);
-      } else if (category === 'terrain') {
+      } else if (category === 'terrain' && !this.playedCards[1].category) {
+        this.position = 'absolute';
         this.dragPosition = {x: 280, y: -280};
         this.playedCards[1] = {
           category: category,
@@ -61,7 +60,8 @@ export class CardComponent implements OnInit {
           time: time,
         };
         this.cardService.playedCards.next(this.playedCards);
-      } else if (category === 'object') {
+      } else if (category === 'object' && !this.playedCards[2].category) {
+        this.position = 'absolute';
         this.dragPosition = {x: 440, y: -280};
         this.playedCards[2] = {
           category: category,
@@ -69,7 +69,8 @@ export class CardComponent implements OnInit {
           time: time,
         };
         this.cardService.playedCards.next(this.playedCards);
-      } else if (category === 'mood') {
+      } else if (category === 'mood' && !this.playedCards[3].category) {
+        this.position = 'absolute';
         this.dragPosition = {x: 600, y: -280};
         this.playedCards[3] = {
           category: category,
@@ -77,9 +78,9 @@ export class CardComponent implements OnInit {
           time: time
         };
         this.cardService.playedCards.next(this.playedCards);
-      } else {
       }
     }
+    //TODO: set next Player
   }
 
   unplayCard(category: string) {
