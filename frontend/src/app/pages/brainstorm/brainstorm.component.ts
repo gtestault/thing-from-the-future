@@ -20,8 +20,9 @@ export class BrainstormComponent implements OnInit {
     })
   }
 
-  submit() {
+  submit(story: string) {
     this.storySubmitted = true;
+    //TODO: submit story
   }
 
 }

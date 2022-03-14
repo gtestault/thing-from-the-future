@@ -9,8 +9,8 @@
     <p class="your-future-thing-title">your thing from the future</p>
       <mat-form-field class="text-field" appearance="fill">
         <mat-label>Write your original invention</mat-label>
-        <textarea rows="8" matInput class="input"></textarea>
+        <textarea #story rows="8" matInput class="input"></textarea>
       </mat-form-field>
-    <button mat-raised-button color="accent" class="submit-button" (click)="submit()" [disabled]="storySubmitted">submit</button>
+    <button mat-raised-button color="accent" class="submit-button" (click)="submit(story.value)" [disabled]="storySubmitted">submit</button>
   </div>
 </div>
