@@ -1,3 +1,8 @@
-<div class="current-player">
-  IT'S {{currentPlayer}} TURN!
+<div class="container">
+  <div class="current-player">
+    it's {{isMyTurn ? "your" : currentPlayer?.username + "'s"}} turn!
+  </div>
+  <div [ngClass]="{'time-remaining': true, 'shake-constant': true, 'shake-little': timeRemaining <= 10 && timeRemaining > 5, 'shake-hard': timeRemaining <= 5}">
+    {{timeRemaining}} seconds remaining
+  </div>
 </div>
