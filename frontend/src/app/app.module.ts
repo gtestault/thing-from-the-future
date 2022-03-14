@@ -30,6 +30,8 @@ import { InvitePlayersDialogComponent } from './components/invite-players-dialog
 import {ClipboardModule} from "@angular/cdk/clipboard";
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { SwapCardsButtonComponent } from './components/swap-cards-button/swap-cards-button.component';
+import {BrainstormComponent} from "./pages/brainstorm/brainstorm.component";
+import { DrawBoardComponent } from './components/draw-board/draw-board.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +50,9 @@ import { SwapCardsButtonComponent } from './components/swap-cards-button/swap-ca
     WaitingRoomComponent,
     PlayerConnectionStatusComponent,
     InvitePlayersDialogComponent,
-    SwapCardsButtonComponent
+    SwapCardsButtonComponent,
+    BrainstormComponent,
+    DrawBoardComponent,
   ],
   imports: [
     MatIconModule,
