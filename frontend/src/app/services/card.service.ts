@@ -8,17 +8,17 @@ import {BehaviorSubject} from 'rxjs';
 export class CardService {
   //index 0 - 3: arc, terrain, object, mood
   playedCards = new BehaviorSubject<Card[]>([
-    {category: '',
-      term: '',
+    {category: 'arc',
+      term: 'jkdebf',
+      time: 'sdkjbf'},
+    {category: 'terrain',
+      term: 'jksdnfuie',
       time: ''},
-    {category: '',
-      term: '',
+    {category: 'object',
+      term: 'jfuiew',
       time: ''},
-    {category: '',
-      term: '',
-      time: ''},
-    {category: '',
-      term: '',
+    {category: 'mood',
+      term: 'kjdbcdf',
       time: ''}]);
 
   constructor() { }

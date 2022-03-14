@@ -2,11 +2,18 @@
 @import '../../../fonts';
 
 .container-brainstorm {
-  height: 97vh;
+  height: 95%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  padding: 1rem;
+}
+
+.played-cards-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  grid-column-gap: 0.5rem;
 }
 
 .card {
@@ -28,6 +35,7 @@
   color: white;
   text-transform: uppercase;
   letter-spacing: 1px;
+  margin-top: 1rem;
 }
 
 .your-future-thing-title {
@@ -36,4 +44,10 @@
   font-size: xx-large;
   font-family: 'Bebas Neue', cursive;
   text-align: center;
+}
+
+.timer {
+  color: white;
+  font-family: 'Bebas Neue', serif;
+  font-size: x-large;
 }
