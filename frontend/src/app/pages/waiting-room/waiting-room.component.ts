@@ -1,35 +1,40 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {GameService} from "../../services/game.service";
-import {Player} from "../../services/models/player";
-import {PlayerService} from "../../services/player.service";
-import {InvitePlayersDialogComponent} from "../../components/invite-players-dialog/invite-players-dialog.component";
-import {MatDialog} from "@angular/material/dialog";
-import {Subscription} from "rxjs";
-import {ActivatedRoute} from "@angular/router";
-import {WAITING_ROOM_PATH_ROOM_ID_VARIABLE} from "../../routes";
+import {GameService} from '../../services/game.service';
+import {Player} from '../../services/models/player';
+import {PlayerService} from '../../services/player.service';
+import {InvitePlayersDialogComponent} from '../../components/invite-players-dialog/invite-players-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
+import {Subscription} from 'rxjs';
+import {ActivatedRoute, Router} from '@angular/router';
+import {PLAYFIELD_PATH, WAITING_ROOM_PATH, WAITING_ROOM_PATH_ROOM_ID_VARIABLE} from '../../routes';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {showErrorSnackbar} from "../../utils/snackbar";
+import {GameState} from "../../services/models/game-state";
 
-//TODO: make it possible to leave a room.
+// TODO: make it possible to leave a room.
 @Component({
   selector: 'app-waiting-room',
   templateUrl: './waiting-room.component.html',
   styleUrls: ['./waiting-room.component.scss']
 })
 export class WaitingRoomComponent implements OnInit, OnDestroy {
-  ownUsername: string = ""
-  players: Player[] = []
-  roomId: string = ""
-  gameUpdatesSubscription: Subscription | null = null
+  ownUsername = '';
+  players: Player[] = [];
+  roomId = '';
+  gameUpdatesSubscription: Subscription | null = null;
 
   constructor(
     private gameService: GameService,
     private playerService: PlayerService,
+    private snackBar: MatSnackBar,
     public dialog: MatDialog,
     private route: ActivatedRoute,
+    private router: Router,
   ) { }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.gameUpdatesSubscription) {
-      this.gameUpdatesSubscription.unsubscribe()
+      this.gameUpdatesSubscription.unsubscribe();
     }
   }
 
@@ -37,19 +42,22 @@ export class WaitingRoomComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(params => {
        const roomId = params[WAITING_ROOM_PATH_ROOM_ID_VARIABLE];
        if (roomId) {
-         this.gameService.joinRoom(roomId)
+         this.gameService.joinRoom(roomId);
        }
     });
-    this.ownUsername = this.playerService.getUsername() || ""
-    this.gameService.init()
+    this.ownUsername = this.playerService.getUsername() || '';
+    this.gameService.init();
     this.gameUpdatesSubscription = this.gameService.getGameUpdates().subscribe(update => {
-      this.players = update.players
-      this.roomId = update.roomId
-    })
+      if (update.gameState === GameState.PLAYING_PLAYFIELD) {
+        this.router.navigateByUrl(`${PLAYFIELD_PATH}`);
+      }
+      this.players = update.players;
+      this.roomId = update.roomId;
+    });
   }
 
-  onInvitePlayers() {
-    this.openInvitePlayersDialog()
+  onInvitePlayers(): void {
+    this.openInvitePlayersDialog();
   }
 
   openInvitePlayersDialog(): void {
@@ -57,5 +65,14 @@ export class WaitingRoomComponent implements OnInit, OnDestroy {
       width: '30rem',
       data: {roomId: this.roomId}
     });
+  }
+
+  async onStartGame(): Promise<void> {
+    try {
+      await this.gameService.startGame();
+    } catch (e: any) {
+      showErrorSnackbar(this.snackBar, `Couldn't start game ${e.toString()}`);
+    }
+    this.router.navigateByUrl(`${PLAYFIELD_PATH}`);
   }
 }

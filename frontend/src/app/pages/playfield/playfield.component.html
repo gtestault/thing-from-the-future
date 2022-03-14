@@ -1,5 +1,10 @@
-<h1 class="game-title">The Thing From The Future</h1>
-<app-empty-card-spaces></app-empty-card-spaces>
-<app-turn-indicator></app-turn-indicator>
-<app-players-cards></app-players-cards>
-<app-player-overview></app-player-overview>
+<div class="container-playfield">
+  <h1 class="game-title">The Thing From The Future</h1>
+  <app-empty-card-spaces></app-empty-card-spaces>
+  <app-turn-indicator [currentPlayer]="currentPlayer"
+                      [isMyTurn]="isMyTurn"
+                      [timeRemaining]="timeRemaining"></app-turn-indicator>
+  <app-players-cards></app-players-cards>
+  <app-player-overview [players]="players"></app-player-overview>
+  <app-swap-cards-button [isMyTurn]="isMyTurn"></app-swap-cards-button>
+</div>

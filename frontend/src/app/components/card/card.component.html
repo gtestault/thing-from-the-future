@@ -1,19 +1,9 @@
-<div class="card"
+<div class="card" cdkDrag [cdkDragFreeDragPosition]="dragPosition" (click)="playCard(category, term, time)"
      [ngClass]="{'card-object': category === 'object', 'card-mood': category === 'mood',
-     'card-terrain': category === 'terrain', 'card-arc': category === 'arc',
-     'turn-around': turnAround}"
-(click)="turnCard();">
+     'card-terrain': category === 'terrain', 'card-arc': category === 'arc'}">
   <div>
     <div class="card-category">{{category}}</div>
     <div class="card-term">{{term}}</div>
-  </div>
-
-  <svg [class.non-display]="!term2" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-    <line class="card-line" x1="0" y1="20" x2="100" y2="20" stroke="black" />
-  </svg>
-
-  <div class="turn-around" *ngIf="category === 'terrain'">
-    <div class="card-category">{{category}}</div>
-    <div *ngIf="term2" class="card-term">{{term2}}</div>
+    <div *ngIf="term" class="time">{{time}}</div>
   </div>
 </div>

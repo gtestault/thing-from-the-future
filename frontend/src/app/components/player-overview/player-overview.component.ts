@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Player } from '../../../models/Player';
+import {Component, Input, OnInit} from '@angular/core';
 import { PlayerService } from '../../services/player.service';
+import {PlayerData} from "../../services/models/player-data";
 
 @Component({
   selector: 'app-player-overview',
@@ -9,28 +9,16 @@ import { PlayerService } from '../../services/player.service';
 })
 export class PlayerOverviewComponent implements OnInit {
 
-  players: Player[] = [];
-  currentPlayersID: number = 0;
-  myID: number = 0;
+  @Input() players: PlayerData[] = []
 
   constructor(private playerService: PlayerService) { }
 
   ngOnInit(): void {
-    //TODO: get players
-    this.players = this.playerService.players;
-    this.myID = this.playerService.myID;
-    this.playerService.currentPlayersID.subscribe(currentPlayersID => {
-      this.currentPlayersID = currentPlayersID;
-    })
 
   }
 
-  isMe(id: number) {
-    return id === this.myID;
-  }
-
-  isCurrentPlayer(id: number) {
-    return id === this.currentPlayersID;
+  isMe(username: string) {
+    return this.playerService.getUsername() == username
   }
 
 }

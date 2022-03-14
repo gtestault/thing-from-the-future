@@ -28,6 +28,10 @@ import { PlayerConnectionStatusComponent } from './components/player-connection-
 import {MatIconModule} from "@angular/material/icon";
 import { InvitePlayersDialogComponent } from './components/invite-players-dialog/invite-players-dialog.component';
 import {ClipboardModule} from "@angular/cdk/clipboard";
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { SwapCardsButtonComponent } from './components/swap-cards-button/swap-cards-button.component';
+import {BrainstormComponent} from "./pages/brainstorm/brainstorm.component";
+import { DrawBoardComponent } from './components/draw-board/draw-board.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +49,10 @@ import {ClipboardModule} from "@angular/cdk/clipboard";
     JoinRoomDialogComponent,
     WaitingRoomComponent,
     PlayerConnectionStatusComponent,
-    InvitePlayersDialogComponent
+    InvitePlayersDialogComponent,
+    SwapCardsButtonComponent,
+    BrainstormComponent,
+    DrawBoardComponent,
   ],
   imports: [
     MatIconModule,
@@ -61,7 +68,9 @@ import {ClipboardModule} from "@angular/cdk/clipboard";
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    FormsModule
+    FormsModule,
+    DragDropModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

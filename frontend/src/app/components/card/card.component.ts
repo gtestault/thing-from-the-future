@@ -1,4 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, HostBinding, Input, OnInit} from '@angular/core';
+import {CardService} from '../../services/card.service';
+import {Card} from '../../../models/Card';
+import { PlayerService} from '../../services/player.service';
 
 @Component({
   selector: 'app-card',
@@ -7,30 +10,94 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class CardComponent implements OnInit {
 
-  constructor() { }
+  constructor(private cardService: CardService, private playerService: PlayerService) { }
+
+  @HostBinding('style.position')
+  position = 'relative';
 
   @Input() category = "";
   @Input() term = "";
-  @Input() term2 = "";
   @Input() time = ""
 
-  turnAround = false;
+  dragPosition = {x: 0, y: 0};
+  positionAbsolute = false;
+  playedCards: Card[] = [
+    {category: '',
+    term: '',
+    time: ''},
+    {category: '',
+    term: '',
+    time: ''},
+    {category: '',
+    term: '',
+    time: ''},
+    {category: '',
+    term: '',
+    time: ''}];
 
   ngOnInit(): void {
-
+    this.cardService.playedCards.subscribe(playedCards => {
+      this.playedCards = playedCards;
+    })
   }
 
-  turnCard() {
-    if (this.term2) {
-      this.turnAround = !this.turnAround;
+  playCard(category: string, term: string, time: string) {
+    if (this.position === 'relative' && this.playerService.currentPlayersID.getValue() === this.playerService.myID) {
+      if (category === 'arc') {
+        if (!this.playedCards[0].category) {
+          this.position = 'absolute';
+          this.dragPosition = {x: 120, y: -280};
+          this.playedCards[0] = {
+            category: category,
+            term: term,
+            time: time,
+          };
+          this.cardService.playedCards.next(this.playedCards);
+        } else {
+          alert('Category already played');
+        }
+      } else if (category === 'terrain') {
+        if (!this.playedCards[1].category) {
+          this.position = 'absolute';
+          this.dragPosition = {x: 280, y: -280};
+          this.playedCards[1] = {
+            category: category,
+            term: term,
+            time: time,
+          };
+          this.cardService.playedCards.next(this.playedCards);
+        } else {
+          alert('Category already played');
+        }
+
+      } else if (category === 'object') {
+        if (!this.playedCards[2].category) {
+          this.position = 'absolute';
+          this.dragPosition = {x: 440, y: -280};
+          this.playedCards[2] = {
+            category: category,
+            term: term,
+            time: time,
+          };
+          this.cardService.playedCards.next(this.playedCards);
+        } else {
+          alert('Category already played');
+        }
+      } else if (category === 'mood') {
+        if (!this.playedCards[3].category) {
+          this.position = 'absolute';
+          this.dragPosition = {x: 600, y: -280};
+          this.playedCards[3] = {
+            category: category,
+            term: term,
+            time: time
+          };
+          this.cardService.playedCards.next(this.playedCards);
+        } else {
+          alert('Category already played');
+        }
+      }
     }
+    //TODO: set next Player
   }
-
-  getCurrentTerm (): String {
-    if (this.term2 && !this.turnAround) {
-      return this.term;
-    }
-    return this.term2;
-  }
-
 }

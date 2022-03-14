@@ -8,9 +8,15 @@ import {
 import {Server, Socket} from 'socket.io';
 import {Logger, UseFilters, UseGuards, UsePipes, ValidationPipe} from "@nestjs/common";
 import {BadRequestTransformationFilter} from "./filters/bad-request-transformation";
-import {JOIN_ROOM_ACTION, NEW_ROOM_ACTION} from "./actions/actions";
+import {
+    JOIN_ROOM_ACTION,
+    NEW_ROOM_ACTION,
+    PLAY_CARD_ACTION,
+    START_GAME_ACTION,
+    SWAP_CARDS_ACTION
+} from "./actions/actions";
 import {RoomService} from "./room.service";
-import {NewRoomDTO} from "./dto/new-room";
+import {EmptyObjectDTO} from "./dto/empty-object-dto";
 import {WsGuard} from "../authentication/guards/ws.guard";
 import {PlayerFetcher} from "../authentication/decorators/player-fetcher";
 import {Player} from "../player/schemas/player.schema";
@@ -22,6 +28,8 @@ import {PlayerService} from "../player/player.service";
 import {RoomNotFoundException} from "./exceptions/room-not-found-exception";
 import {WsAckExceptionFilter} from "./filters/ws-ack-exception-filter";
 import {OkResponse} from "./responses/ok-response";
+import {PlayCardDto} from "./dto/play-card-dto";
+import {LOGOUT_PLAYER_EVENT, GAME_UDPATE_EVENT} from "./events/events";
 
 @UseFilters(new BadRequestTransformationFilter())
 @UseFilters(new WsAckExceptionFilter())
@@ -43,7 +51,7 @@ export class GameGateway implements OnGatewayConnection<Socket>, OnGatewayDiscon
 
     @SubscribeMessage(NEW_ROOM_ACTION)
     async newRoom(
-        @MessageBody() newRoom: NewRoomDTO,
+        @MessageBody() newRoom: EmptyObjectDTO,
         @ConnectedSocket() s: Socket,
         @PlayerFetcher() p: Player
     ) {
@@ -69,6 +77,48 @@ export class GameGateway implements OnGatewayConnection<Socket>, OnGatewayDiscon
         return OkResponse
     }
 
+    @SubscribeMessage(START_GAME_ACTION)
+    async startGame(
+        @MessageBody() emptyObjectDTO: EmptyObjectDTO,
+        @ConnectedSocket() s: Socket,
+        @PlayerFetcher() p: Player
+    ) {
+        const playerRoom = await this.roomService.getPlayerRoom(p._id)
+        await this.roomService.startGame(playerRoom._id, p)
+        return OkResponse
+    }
+
+    @SubscribeMessage(SWAP_CARDS_ACTION)
+    async swapCards(
+        @MessageBody() emptyObjectDTO: EmptyObjectDTO,
+        @ConnectedSocket() s: Socket,
+        @PlayerFetcher() p: Player
+    ) {
+        const playerRoom = await this.roomService.getPlayerRoom(p._id)
+        await this.roomService.swapCards(playerRoom._id, p)
+        this.logger.log("swapped cards for {}", p.username)
+        this.sendGameUpdate(playerRoom._id)
+        return OkResponse
+    }
+
+    @SubscribeMessage(PLAY_CARD_ACTION)
+    async playCardAction(
+        @MessageBody() playCardDTO: PlayCardDto,
+        @ConnectedSocket() s: Socket,
+        @PlayerFetcher() p: Player
+    ) {
+        const playerRoom = await this.roomService.getPlayerRoom(p._id)
+        await this.roomService.playCard(playerRoom._id, p, playCardDTO.card)
+        this.sendGameUpdate(playerRoom._id)
+        return OkResponse
+    }
+
+    async sendGameUpdate(roomId: string) {
+        const room = await this.roomService.getRoom(roomId)
+        const tick: GameTickDTO = this.roomService.getGameData(room)
+        this.server.to(room._id).emit(GAME_UDPATE_EVENT, JSON.stringify(tick))
+    }
+
     @Interval(1000)
     async gameTick() {
         const rooms = await this.roomService.allRooms()
@@ -78,18 +128,23 @@ export class GameGateway implements OnGatewayConnection<Socket>, OnGatewayDiscon
                 //this.roomService.deleteRoom(room._id)
                 continue
             }
-            const playerInfo = room.players.map(p => _.pick(p, "username"))
-            const tick: GameTickDTO = {roomId: room._id, players: playerInfo}
-            this.server.to(room._id).emit('update', JSON.stringify(tick))
+            const tick: GameTickDTO = this.roomService.getGameData(room)
+            this.roomService.decreaseTime(room._id)
+            this.server.to(room._id).emit(GAME_UDPATE_EVENT, JSON.stringify(tick))
         }
     }
+
     private static getPlayerIdFromSocket(socket: Socket): string | undefined {
         return socket.handshake.headers.authorization
     }
 
+
     async handleDisconnect(socket: Socket) {
         const playerId = GameGateway.getPlayerIdFromSocket(socket)
         const player = await this.playerService.getPlayerById(playerId)
+        if (!player) {
+            return
+        }
         if (player.socketId == socket.id) {
             this.playerService.setPlayerSocketId(playerId, "")
         }
@@ -97,12 +152,16 @@ export class GameGateway implements OnGatewayConnection<Socket>, OnGatewayDiscon
 
     async handleConnection(socket: Socket) {
         const playerId = GameGateway.getPlayerIdFromSocket(socket)
-        if (playerId) {
-            this.playerService.setPlayerSocketId(playerId, socket.id)
-            const room = await this.roomService.getPlayerRoom(playerId)
-            if (room) {
-                socket.join(room._id)
-            }
+        const player = await this.playerService.getPlayerById(playerId)
+        if (!player) {
+            socket.emit(LOGOUT_PLAYER_EVENT, "logout")
+            this.logger.log("logged out player since no associated account was found in db")
+            return
+        }
+        await this.playerService.setPlayerSocketId(playerId, socket.id)
+        const room = await this.roomService.getPlayerRoom(playerId)
+        if (room) {
+            socket.join(room._id)
         }
     }
 }

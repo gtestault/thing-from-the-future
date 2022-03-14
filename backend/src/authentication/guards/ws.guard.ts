@@ -1,5 +1,6 @@
 import {CanActivate, ExecutionContext, Injectable} from "@nestjs/common";
 import {PlayerService} from "../../player/player.service";
+import {DISCONNECT_EVENT} from "@nestjs/websockets/constants";
 
 export function getPlayerIdFromExecutionContext(context: ExecutionContext): string | undefined {
     return context.switchToWs().getClient().handshake.headers.authorization

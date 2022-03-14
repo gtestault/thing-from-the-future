@@ -1,31 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { PlayerService } from '../../services/player.service';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {PlayerData} from "../../services/models/player-data";
 
 @Component({
   selector: 'app-turn-indicator',
   templateUrl: './turn-indicator.component.html',
-  styleUrls: ['./turn-indicator.component.scss']
+  styleUrls: ['./turn-indicator.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class TurnIndicatorComponent implements OnInit {
+  @Input() timeRemaining: number = 0
+  @Input() currentPlayer: PlayerData | undefined
+  @Input() isMyTurn: boolean = false
 
-  currentPlayer = '';
-
-  constructor(private playerService: PlayerService) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.playerService.currentPlayersID.subscribe(id => {
-      this.getCurrentPlayer(id);
-    })
   }
-
-  getCurrentPlayer(id: number) {
-    if (id === this.playerService.myID) {
-      this.currentPlayer = 'your';
-    } else {
-      this.currentPlayer = this.playerService.getPlayersName(id);
-    }
-  }
-
-
 
 }

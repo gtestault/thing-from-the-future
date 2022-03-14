@@ -1,7 +1,7 @@
 @import '../../../colors';
 @import '../../../fonts';
 
-:host {
+.container-empty-card-spaces {
   display: grid;
   grid-template-columns: auto auto auto auto;
 }

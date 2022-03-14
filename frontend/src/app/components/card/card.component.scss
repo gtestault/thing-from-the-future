@@ -12,6 +12,10 @@
   font-size: large;
 }
 
+.position-absolute {
+  position: absolute;
+}
+
 .card:hover {
   cursor: pointer;
 }
@@ -48,16 +52,6 @@
 
 .card-line {
   stroke-width: 2px;
-}
-
-.turn-around {
-  transform: (180deg);
-  /* Safari */
-  -webkit-transform: rotate(180deg);
-
-  /* Firefox */
-  -moz-transform: rotate(180deg);
-  align-self: end;
 }
 
 .non-display {

@@ -1,9 +1,23 @@
 @import '../../../colors';
 @import '../../../fonts';
+@import 'https://csshake.surge.sh/csshake.min.css';
 
 .current-player {
   color: $tftf-yellow;
   text-align: center;
+  text-transform: uppercase;
   font-family: 'Bebas Neue', cursive;
   font-size: x-large;
+}
+
+.time-remaining {
+  color: white;
+  text-transform: uppercase;
+  font-family: 'Bebas Neue', cursive;
+  font-size: x-large;
+}
+
+.container {
+  display: flex;
+  gap: 2rem;
 }
