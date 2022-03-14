@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BrainstormComponent implements OnInit {
 
+  storySubmitted = false;
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  submit() {
+    this.storySubmitted = true;
   }
 
 }
