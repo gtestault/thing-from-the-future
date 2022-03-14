@@ -2,6 +2,7 @@ import {Component, HostBinding, Input, OnInit} from '@angular/core';
 import {CardService} from '../../services/card.service';
 import {BehaviorSubject} from 'rxjs';
 import {Card} from '../../../models/Card';
+import {PlayerService} from '../../services/player.service';
 
 @Component({
   selector: 'app-card',
@@ -10,7 +11,7 @@ import {Card} from '../../../models/Card';
 })
 export class CardComponent implements OnInit {
 
-  constructor(private cardService: CardService) { }
+  constructor(private cardService: CardService, private playerService: PlayerService) { }
 
   @HostBinding('style.position')
   position = 'relative';
@@ -49,7 +50,7 @@ export class CardComponent implements OnInit {
         this.playedCards[0] = {
           category: category,
           term: term,
-          time: time
+          time: time,
         };
         this.cardService.playedCards.next(this.playedCards);
       } else if (category === 'terrain') {
@@ -57,7 +58,7 @@ export class CardComponent implements OnInit {
         this.playedCards[1] = {
           category: category,
           term: term,
-          time: time
+          time: time,
         };
         this.cardService.playedCards.next(this.playedCards);
       } else if (category === 'object') {
@@ -65,7 +66,7 @@ export class CardComponent implements OnInit {
         this.playedCards[2] = {
           category: category,
           term: term,
-          time: time
+          time: time,
         };
         this.cardService.playedCards.next(this.playedCards);
       } else if (category === 'mood') {
@@ -78,8 +79,6 @@ export class CardComponent implements OnInit {
         this.cardService.playedCards.next(this.playedCards);
       } else {
       }
-    } else {
-      this.unplayCard(category);
     }
   }
 
