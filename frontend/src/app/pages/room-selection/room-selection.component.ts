@@ -24,12 +24,13 @@ export class RoomSelectionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.gameService.init()
   }
 
   async onCreateRoom(): Promise<void> {
     try {
       this.roomId = await this.gameService.createRoom();
-      await this.router.navigate([WAITING_ROOM_PATH]);
+      await this.router.navigate([WAITING_ROOM_PATH])
     } catch (e: any) {
       showErrorSnackbar(this.snackBar, e.message);
     }

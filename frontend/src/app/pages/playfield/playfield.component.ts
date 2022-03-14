@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Card} from '../../../models/Card';
 import {Subscription} from 'rxjs';
-import {Player} from '../../services/models/player';
 import {PlayerService} from '../../services/player.service';
 import {GameService} from '../../services/game.service';
-import {PlayerCards} from '../../services/models/game-tick';
+import {PlayerData} from "../../services/models/player-data";
 
 @Component({
   selector: 'app-playfield',
@@ -14,8 +12,7 @@ import {PlayerCards} from '../../services/models/game-tick';
 export class PlayfieldComponent implements OnInit {
   gameUpdatesSubscription: Subscription | null = null;
   ownUsername = '';
-  players: Player[] = [];
-  playerCards: PlayerCards = {};
+  players: PlayerData[] = []
   roomId = '';
   constructor(
     private gameService: GameService,
@@ -26,9 +23,8 @@ export class PlayfieldComponent implements OnInit {
     this.ownUsername = this.playerService.getUsername() || '';
     this.gameService.init();
     this.gameUpdatesSubscription = this.gameService.getGameUpdates().subscribe(update => {
-      this.players = update.players;
-      this.roomId = update.roomId;
-      this.playerCards = update.playerCards;
+      console.log(update)
+      this.players = update.players
     });
   }
 

@@ -20,7 +20,7 @@ export class RoomService {
     private readonly logger = new Logger(RoomService.name);
     private static PLAYER_CARDS_COUNT = 7
     private static PLAYFIELD_MAX_CARDS = 4
-    public static PLAYER_TURN_TIME_SECONDS = 20
+    public static PLAYER_TURN_TIME_SECONDS = 30
     private static BRAINSTORM_PLAYTIME_SECONDS = 60
 
     constructor(@InjectModel(Room.name) private roomModel: Model<RoomDocument>) {
@@ -93,6 +93,7 @@ export class RoomService {
                 return
             case GameState.PLAYING_PLAYFIELD:
                 room.timeRemaining -= 1
+                await room.save()
                 // if timer expires during playfield gameplay, let next player play.
                 if (room.timeRemaining <= 0) {
                     await this.nextPlayerPlayfield(roomId)
@@ -101,7 +102,6 @@ export class RoomService {
             default:
                 return
         }
-        await room.save()
     }
 
     async playCard(roomId: string, player: Player, card: Card) {
@@ -133,6 +133,21 @@ export class RoomService {
         this.nextPlayerPlayfield(roomId)
         room.markModified("playerCards")
         room.markModified("playedCards")
+        await room.save()
+    }
+
+    async swapCards(roomId, player: Player) {
+        let room = await this.getRoomById(roomId)
+        if (room.gameState !== GameState.PLAYING_PLAYFIELD) {
+            throw new ActionNotAllowedException()
+        }
+        let newPlayerCards: Card[] = []
+        for (let i = 0; i < RoomService.PLAYER_CARDS_COUNT; i++) {
+            newPlayerCards.push(room.deck.drawRandom())
+        }
+        room.playerCards[player.username] = newPlayerCards
+        room.markModified("playerCards")
+        await this.nextPlayerPlayfield(roomId)
         await room.save()
     }
 
@@ -182,6 +197,7 @@ export class RoomService {
             players: this.getAggregatedPlayerData(room.players, room.playerQueue, room.playerCards, room.currentPlayer),
             timeRemaining: room.timeRemaining,
             admin: room.admin,
+            gameState: room.gameState
         }
         return gameData
     }

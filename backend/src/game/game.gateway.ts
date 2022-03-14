@@ -23,8 +23,7 @@ import {RoomNotFoundException} from "./exceptions/room-not-found-exception";
 import {WsAckExceptionFilter} from "./filters/ws-ack-exception-filter";
 import {OkResponse} from "./responses/ok-response";
 import {PlayCardDto} from "./dto/play-card-dto";
-import {PlayerDataDto} from "./dto/player-data-dto";
-import {PlayerCards} from "./schemas/room.schema";
+import {LOGOUT_PLAYER_EVENT, GAME_UDPATE_EVENT} from "./events/events";
 
 @UseFilters(new BadRequestTransformationFilter())
 @UseFilters(new WsAckExceptionFilter())
@@ -104,9 +103,10 @@ export class GameGateway implements OnGatewayConnection<Socket>, OnGatewayDiscon
             }
             const tick: GameTickDTO = this.roomService.getGameData(room)
             this.roomService.decreaseTime(room._id)
-            this.server.to(room._id).emit('update', JSON.stringify(tick))
+            this.server.to(room._id).emit(GAME_UDPATE_EVENT, JSON.stringify(tick))
         }
     }
+
     private static getPlayerIdFromSocket(socket: Socket): string | undefined {
         return socket.handshake.headers.authorization
     }
@@ -115,6 +115,9 @@ export class GameGateway implements OnGatewayConnection<Socket>, OnGatewayDiscon
     async handleDisconnect(socket: Socket) {
         const playerId = GameGateway.getPlayerIdFromSocket(socket)
         const player = await this.playerService.getPlayerById(playerId)
+        if (!player) {
+            return
+        }
         if (player.socketId == socket.id) {
             this.playerService.setPlayerSocketId(playerId, "")
         }
@@ -122,12 +125,16 @@ export class GameGateway implements OnGatewayConnection<Socket>, OnGatewayDiscon
 
     async handleConnection(socket: Socket) {
         const playerId = GameGateway.getPlayerIdFromSocket(socket)
-        if (playerId) {
-            this.playerService.setPlayerSocketId(playerId, socket.id)
-            const room = await this.roomService.getPlayerRoom(playerId)
-            if (room) {
-                socket.join(room._id)
-            }
+        const player = await this.playerService.getPlayerById(playerId)
+        if (!player) {
+            socket.emit(LOGOUT_PLAYER_EVENT, "logout")
+            this.logger.log("logged out player since no associated account was found in db")
+            return
+        }
+        await this.playerService.setPlayerSocketId(playerId, socket.id)
+        const room = await this.roomService.getPlayerRoom(playerId)
+        if (room) {
+            socket.join(room._id)
         }
     }
 }

@@ -5,20 +5,26 @@ import {JoinRoomDto} from './dto/join-room-dto';
 import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs';
 import {GameTick} from './models/game-tick';
+import {Router} from "@angular/router";
 
 const NEW_ROOM_ACTION = 'new-room';
 const JOIN_ROOM_ACTION = 'join-room';
 const START_GAME_ACTION = 'start-game';
 
 const UPDATE_EVENT = 'update';
+const LOGOUT_PLAYER_EVENT = 'logout-player';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameService {
 
-  constructor(private playerService: PlayerService) {
+  constructor(
+    private playerService: PlayerService,
+    private router: Router,
+  ) {
   }
+
   private socket: Socket | null = null;
   private roomId = '';
   private gameUpdates = new Observable<GameTick>();
@@ -42,6 +48,12 @@ export class GameService {
           });
         }
       );
+      this.getSocket().on(LOGOUT_PLAYER_EVENT, (data: any) => {
+        console.log("logged player out")
+        this.playerService.logoutPlayer()
+        this.router.navigateByUrl("/")
+      });
+      console.log("initialized socket")
     }
     return this.socket;
   }
@@ -81,6 +93,7 @@ export class GameService {
       );
     });
   }
+
   startGame(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.getSocket().emit(START_GAME_ACTION, JSON.stringify({}), (res: any) => {

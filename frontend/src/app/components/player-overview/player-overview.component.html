@@ -1,5 +1,5 @@
 <h2 class="title">Player</h2>
 <div *ngFor="let player of players">
-  <img [ngClass]="{'arrow-invisible': !isCurrentPlayer(player.id)}" src="assets/arrow-right.svg">
-  <span [ngClass]="{'player': true, 'current-player': isCurrentPlayer(player.id)}" class="player">{{player.name}}<img class="person-icon" src="assets/person.svg" *ngIf="isMe(player.id)"></span>
+  <img [ngClass]="{'arrow-invisible': !player.isCurrentPlayer}" src="assets/arrow-right.svg">
+  <span [ngClass]="{'player': true, 'current-player': player.isCurrentPlayer}" class="player">{{player.username}}<img class="person-icon" src="assets/person.svg" *ngIf="isMe(player.username)"></span>
 </div>

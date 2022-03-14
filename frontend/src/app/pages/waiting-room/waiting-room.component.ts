@@ -9,6 +9,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {PLAYFIELD_PATH, WAITING_ROOM_PATH, WAITING_ROOM_PATH_ROOM_ID_VARIABLE} from '../../routes';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {showErrorSnackbar} from "../../utils/snackbar";
+import {GameState} from "../../services/models/game-state";
 
 // TODO: make it possible to leave a room.
 @Component({
@@ -47,6 +48,9 @@ export class WaitingRoomComponent implements OnInit, OnDestroy {
     this.ownUsername = this.playerService.getUsername() || '';
     this.gameService.init();
     this.gameUpdatesSubscription = this.gameService.getGameUpdates().subscribe(update => {
+      if (update.gameState === GameState.PLAYING_PLAYFIELD) {
+        this.router.navigateByUrl(`${PLAYFIELD_PATH}`);
+      }
       this.players = update.players;
       this.roomId = update.roomId;
     });

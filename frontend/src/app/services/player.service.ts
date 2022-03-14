@@ -64,8 +64,16 @@ export class PlayerService {
     this.playerId = localStorage.getItem(STORAGE_PLAYER_ID_KEY)
     this.username = localStorage.getItem(STORAGE_USERNAME_KEY)
   }
+
+  logoutPlayer() {
+    this.playerId = ""
+    this.username = ""
+    localStorage.setItem(STORAGE_PLAYER_ID_KEY, "")
+    localStorage.setItem(STORAGE_USERNAME_KEY, "")
+  }
+
   isRegistered(): boolean {
-    return this.username != null && this.playerId != null
+    return !!this.username && !!this.playerId
   }
 
   async registerPlayer(username: string) {
