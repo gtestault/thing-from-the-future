@@ -1,6 +1,7 @@
 import {Component, HostBinding, Input, OnInit} from '@angular/core';
 import {CardService} from '../../services/card.service';
 import {Card} from '../../../models/Card';
+import { PlayerService} from '../../services/player.service';
 
 @Component({
   selector: 'app-card',
@@ -9,7 +10,7 @@ import {Card} from '../../../models/Card';
 })
 export class CardComponent implements OnInit {
 
-  constructor(private cardService: CardService) { }
+  constructor(private cardService: CardService, private playerService: PlayerService) { }
 
   @HostBinding('style.position')
   position = 'relative';
@@ -41,7 +42,7 @@ export class CardComponent implements OnInit {
   }
 
   playCard(category: string, term: string, time: string) {
-    if (this.position === 'relative') {
+    if (this.position === 'relative' && this.playerService.currentPlayersID.getValue() === this.playerService.myID) {
       if (category === 'arc') {
         if (!this.playedCards[0].category) {
           this.position = 'absolute';
