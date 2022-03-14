@@ -6,7 +6,7 @@ import {Model} from "mongoose";
 import {GameState, PlayerCards, Room, RoomDocument} from "./schemas/room.schema";
 import * as _ from "lodash"
 import {Socket} from "socket.io";
-import {Card, DeckBuilder} from "thing-from-the-future-utils";
+import {Card, Deck, DeckBuilder} from "thing-from-the-future-utils";
 import {ActionNotAllowedException} from "./exceptions/action-not-allowed-exception";
 import {CardTypeAlreadyPlayedException} from "./exceptions/card-type-already-played-exception";
 import {NotYourTurnException} from "./exceptions/not-your-turn-exception";
@@ -74,7 +74,7 @@ export class RoomService {
         for (const player of room.players) {
             let playerCards: Card[] = []
             for (let i = 0; i < RoomService.PLAYER_CARDS_COUNT; i++) {
-                playerCards.push(deck.drawRandom())
+                playerCards.push(deck.drawRandomWithReplacement())
             }
             room.playerCards[player.username] = playerCards
         }
@@ -141,9 +141,13 @@ export class RoomService {
         if (room.gameState !== GameState.PLAYING_PLAYFIELD) {
             throw new ActionNotAllowedException()
         }
+        if (player._id !== room.currentPlayer._id) {
+            throw new NotYourTurnException()
+        }
         let newPlayerCards: Card[] = []
+        const cardDeck = DeckBuilder.getInstance().baseDeck()
         for (let i = 0; i < RoomService.PLAYER_CARDS_COUNT; i++) {
-            newPlayerCards.push(room.deck.drawRandom())
+            newPlayerCards.push(cardDeck.drawRandom())
         }
         room.playerCards[player.username] = newPlayerCards
         room.markModified("playerCards")

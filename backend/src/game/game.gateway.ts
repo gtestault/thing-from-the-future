@@ -8,7 +8,13 @@ import {
 import {Server, Socket} from 'socket.io';
 import {Logger, UseFilters, UseGuards, UsePipes, ValidationPipe} from "@nestjs/common";
 import {BadRequestTransformationFilter} from "./filters/bad-request-transformation";
-import {JOIN_ROOM_ACTION, NEW_ROOM_ACTION, PLAY_CARD_ACTION, START_GAME_ACTION} from "./actions/actions";
+import {
+    JOIN_ROOM_ACTION,
+    NEW_ROOM_ACTION,
+    PLAY_CARD_ACTION,
+    START_GAME_ACTION,
+    SWAP_CARDS_ACTION
+} from "./actions/actions";
 import {RoomService} from "./room.service";
 import {EmptyObjectDTO} from "./dto/empty-object-dto";
 import {WsGuard} from "../authentication/guards/ws.guard";
@@ -82,14 +88,35 @@ export class GameGateway implements OnGatewayConnection<Socket>, OnGatewayDiscon
         return OkResponse
     }
 
+    @SubscribeMessage(SWAP_CARDS_ACTION)
+    async swapCards(
+        @MessageBody() emptyObjectDTO: EmptyObjectDTO,
+        @ConnectedSocket() s: Socket,
+        @PlayerFetcher() p: Player
+    ) {
+        const playerRoom = await this.roomService.getPlayerRoom(p._id)
+        await this.roomService.swapCards(playerRoom._id, p)
+        this.logger.log("swapped cards for {}", p.username)
+        this.sendGameUpdate(playerRoom._id)
+        return OkResponse
+    }
+
     @SubscribeMessage(PLAY_CARD_ACTION)
     async playCardAction(
         @MessageBody() playCardDTO: PlayCardDto,
         @ConnectedSocket() s: Socket,
         @PlayerFetcher() p: Player
     ) {
-        await this.roomService.playCard(playCardDTO.roomId, p, playCardDTO.card)
+        const playerRoom = await this.roomService.getPlayerRoom(p._id)
+        await this.roomService.playCard(playerRoom._id, p, playCardDTO.card)
+        this.sendGameUpdate(playerRoom._id)
         return OkResponse
+    }
+
+    async sendGameUpdate(roomId: string) {
+        const room = await this.roomService.getRoom(roomId)
+        const tick: GameTickDTO = this.roomService.getGameData(room)
+        this.server.to(room._id).emit(GAME_UDPATE_EVENT, JSON.stringify(tick))
     }
 
     @Interval(1000)

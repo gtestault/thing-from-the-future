@@ -10,6 +10,7 @@ import {Router} from "@angular/router";
 const NEW_ROOM_ACTION = 'new-room';
 const JOIN_ROOM_ACTION = 'join-room';
 const START_GAME_ACTION = 'start-game';
+const SWAP_CARDS_ACTION = 'swap-cards';
 
 const UPDATE_EVENT = 'update';
 const LOGOUT_PLAYER_EVENT = 'logout-player';
@@ -88,6 +89,18 @@ export class GameService {
             reject(new Error(res.message));
           }
           this.roomId = roomId;
+          resolve();
+        }
+      );
+    });
+  }
+
+  swapCards(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.getSocket().emit(SWAP_CARDS_ACTION, {}, (res: any) => {
+          if (GameService.isException(res)) {
+            reject(new Error(res.message));
+          }
           resolve();
         }
       );

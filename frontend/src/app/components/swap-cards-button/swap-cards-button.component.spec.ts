@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TimerComponent } from './timer.component';
+import { SwapCardsButtonComponent } from './swap-cards-button.component';
 
-describe('TimerComponent', () => {
-  let component: TimerComponent;
-  let fixture: ComponentFixture<TimerComponent>;
+describe('SwapCardsButtonComponent', () => {
+  let component: SwapCardsButtonComponent;
+  let fixture: ComponentFixture<SwapCardsButtonComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TimerComponent ]
+      declarations: [ SwapCardsButtonComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TimerComponent);
+    fixture = TestBed.createComponent(SwapCardsButtonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
