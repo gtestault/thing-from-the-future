@@ -36,7 +36,7 @@ export class PlayerService {
 
   currentPlayersID = new BehaviorSubject<number>(0);
 
-  myID = 1;
+  myID = 0;
 
 
   //TODO: Set player array, remove dummy data
