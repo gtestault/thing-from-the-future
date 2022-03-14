@@ -70,6 +70,7 @@ import { DrawBoardComponent } from './components/draw-board/draw-board.component
     BrowserAnimationsModule,
     FormsModule,
     DragDropModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
