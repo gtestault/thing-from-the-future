@@ -9,7 +9,6 @@ import {PlayerOverviewComponent} from './components/player-overview/player-overv
 import {PlayersCardsComponent} from './components/players-cards/players-cards.component';
 import {CardFieldComponent} from './components/card-field/card-field.component';
 import {TurnIndicatorComponent} from './components/turn-indicator/turn-indicator.component';
-import {EmptyCardSpaceComponent} from './components/empty-card-space/empty-card-space.component';
 import {EmptyCardSpacesComponent} from './components/empty-card-spaces/empty-card-spaces.component';
 import {UsernameSelectionComponent} from './pages/username-selection/username-selection.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -42,7 +41,6 @@ import { DrawBoardComponent } from './components/draw-board/draw-board.component
     PlayersCardsComponent,
     CardFieldComponent,
     TurnIndicatorComponent,
-    EmptyCardSpaceComponent,
     EmptyCardSpacesComponent,
     UsernameSelectionComponent,
     RoomSelectionComponent,

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {Card} from '../../../models/Card';
+import {Component, Input, OnInit} from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
+import {Card} from "thing-from-the-future-utils";
 
 @Component({
   selector: 'app-players-cards',
@@ -8,72 +8,10 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
   styleUrls: ['./players-cards.component.scss']
 })
 export class PlayersCardsComponent implements OnInit {
+  @Input() cards: Card[] = []
 
-  cards: Card[] = [
-    {
-      category: "object",
-      term: "postcard",
-      time: ""
-    },
-    {
-      category: "mood",
-      term: "melancholy",
-      time: ""
-    },
-    {
-      category: "terrain",
-      term: "grandma's house",
-      time: ""
-    },
-    {
-      category:  "arc",
-      term: "grow",
-      time: ""
-    },
-    {
-      category: "object",
-      term: "postcard",
-      time: ""
-    },
-    {
-      category: "mood",
-      term: "melancholy",
-      time: ""
-    },
-    {
-      category: "terrain",
-      term: "grandma's house",
-      time: ""
-    },
-    {
-      category:  "arc",
-      term: "grow",
-      time: ""
-    },
-    {
-      category: "object",
-      term: "postcard",
-      time: ""
-    },
-    {
-      category: "mood",
-      term: "melancholy",
-      time: ""
-    },
-    {
-      category: "terrain",
-      term: "grandma's house",
-      time: ""
-    },
-    {
-      category:  "arc",
-      term: "grow",
-      time: ""
-    },
-  ];
-
-
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }

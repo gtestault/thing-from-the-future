@@ -96,7 +96,7 @@ export class GameGateway implements OnGatewayConnection<Socket>, OnGatewayDiscon
     ) {
         const playerRoom = await this.roomService.getPlayerRoom(p._id)
         await this.roomService.swapCards(playerRoom._id, p)
-        this.logger.log("swapped cards for {}", p.username)
+        this.logger.log("swapped cards for " +  p.username)
         this.sendGameUpdate(playerRoom._id)
         return OkResponse
     }
@@ -108,6 +108,7 @@ export class GameGateway implements OnGatewayConnection<Socket>, OnGatewayDiscon
         @PlayerFetcher() p: Player
     ) {
         const playerRoom = await this.roomService.getPlayerRoom(p._id)
+        this.logger.log(`card was played: ${JSON.stringify(playCardDTO.card)}`)
         await this.roomService.playCard(playerRoom._id, p, playCardDTO.card)
         this.sendGameUpdate(playerRoom._id)
         return OkResponse

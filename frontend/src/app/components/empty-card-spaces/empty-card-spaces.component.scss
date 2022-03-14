@@ -12,7 +12,17 @@
   opacity: 0.3;
   border-radius: 1rem;
   margin: 0 1rem 0 1rem;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: large;
+  padding: 0.5rem 0 0.5rem 0;
 }
+
+.played {
+  opacity: 1!important;
+  border: solid black 0.25rem;
+}
+
 
 .card-object {
   background-color: $tftf-red;
@@ -28,4 +38,15 @@
 
 .card-arc {
   background-color: $tftf-green
+}
+.card-category {
+  font-family: 'Cabin', sans-serif;
+  color: white;
+}
+
+.card-term {
+  font-family: 'Bebas Neue', cursive;
+  color: black;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }

@@ -17,7 +17,7 @@ export type PlayerCards = {
     [username: string]: Card[]
 }
 
-@Schema({minimize: false})
+@Schema({minimize: false, versionKey: false})
 export class Room {
     @Prop()
     _id: string

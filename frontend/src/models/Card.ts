@@ -1,5 +1,5 @@
 export interface Card {
-  category: string,
-  term: string,
+  kind: string,
+  name: string,
   time: string,
 }

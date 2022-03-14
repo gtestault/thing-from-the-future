@@ -1,7 +1,11 @@
 import {Component, HostBinding, Input, OnInit} from '@angular/core';
-import {CardService} from '../../services/card.service';
-import {Card} from '../../../models/Card';
-import { PlayerService} from '../../services/player.service';
+import {PlayerService} from '../../services/player.service';
+import {Card, CardKind} from "thing-from-the-future-utils";
+import {GameService} from "../../services/game.service";
+import {Subscription} from "rxjs";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {showErrorSnackbar} from "../../utils/snackbar";
+import * as _ from "lodash";
 
 @Component({
   selector: 'app-card',
@@ -10,94 +14,69 @@ import { PlayerService} from '../../services/player.service';
 })
 export class CardComponent implements OnInit {
 
-  constructor(private cardService: CardService, private playerService: PlayerService) { }
+  constructor(
+    private gameService: GameService,
+    private playerService: PlayerService,
+    private snackbar: MatSnackBar
+  ) {
+  }
 
+  gameUpdatesSubscription: Subscription | null = null;
+  playedCards: Card[] = []
+  moodCardPlayed: boolean = false;
+  arcCardPlayed: boolean = false;
+  terrainCardPlayed: boolean = false;
+  objectCardPlayed: boolean = false;
   @HostBinding('style.position')
   position = 'relative';
 
-  @Input() category = "";
-  @Input() term = "";
-  @Input() time = ""
+  @Input() kind = "";
+  @Input() name = "";
 
   dragPosition = {x: 0, y: 0};
-  positionAbsolute = false;
-  playedCards: Card[] = [
-    {category: '',
-    term: '',
-    time: ''},
-    {category: '',
-    term: '',
-    time: ''},
-    {category: '',
-    term: '',
-    time: ''},
-    {category: '',
-    term: '',
-    time: ''}];
 
   ngOnInit(): void {
-    this.cardService.playedCards.subscribe(playedCards => {
-      this.playedCards = playedCards;
-    })
+    this.gameService.init()
+    this.gameUpdatesSubscription = this.gameService.getGameUpdates().subscribe(update => {
+      this.moodCardPlayed = !!_.find(update.playedCards, c => c.kind == "mood")
+      this.arcCardPlayed = !!_.find(update.playedCards, c => c.kind == "arc")
+      this.objectCardPlayed = !!_.find(update.playedCards, c => c.kind == "object")
+      this.terrainCardPlayed = !!_.find(update.playedCards, c => c.kind == "terrain")
+    });
   }
 
-  playCard(category: string, term: string, time: string) {
-    if (this.position === 'relative' && this.playerService.currentPlayersID.getValue() === this.playerService.myID) {
-      if (category === 'arc') {
-        if (!this.playedCards[0].category) {
-          this.position = 'absolute';
-          this.dragPosition = {x: 120, y: -280};
-          this.playedCards[0] = {
-            category: category,
-            term: term,
-            time: time,
-          };
-          this.cardService.playedCards.next(this.playedCards);
-        } else {
-          alert('Category already played');
+  async playCard(kind: string, name: string) {
+    const cardAlreadyPlayedError = "A card of this kind has been played already"
+    switch (kind) {
+      case "mood":
+        if (this.moodCardPlayed) {
+          showErrorSnackbar(this.snackbar, cardAlreadyPlayedError);
+          return
         }
-      } else if (category === 'terrain') {
-        if (!this.playedCards[1].category) {
-          this.position = 'absolute';
-          this.dragPosition = {x: 280, y: -280};
-          this.playedCards[1] = {
-            category: category,
-            term: term,
-            time: time,
-          };
-          this.cardService.playedCards.next(this.playedCards);
-        } else {
-          alert('Category already played');
+        break
+      case "arc":
+        if (this.arcCardPlayed) {
+          showErrorSnackbar(this.snackbar, cardAlreadyPlayedError);
+          return
         }
-
-      } else if (category === 'object') {
-        if (!this.playedCards[2].category) {
-          this.position = 'absolute';
-          this.dragPosition = {x: 440, y: -280};
-          this.playedCards[2] = {
-            category: category,
-            term: term,
-            time: time,
-          };
-          this.cardService.playedCards.next(this.playedCards);
-        } else {
-          alert('Category already played');
+        break
+      case "object":
+        if (this.objectCardPlayed) {
+          showErrorSnackbar(this.snackbar, cardAlreadyPlayedError);
+          return
         }
-      } else if (category === 'mood') {
-        if (!this.playedCards[3].category) {
-          this.position = 'absolute';
-          this.dragPosition = {x: 600, y: -280};
-          this.playedCards[3] = {
-            category: category,
-            term: term,
-            time: time
-          };
-          this.cardService.playedCards.next(this.playedCards);
-        } else {
-          alert('Category already played');
+        break
+      case "terrain":
+        if (this.terrainCardPlayed) {
+          showErrorSnackbar(this.snackbar, cardAlreadyPlayedError);
+          return
         }
-      }
+        break
     }
-    //TODO: set next Player
+    try {
+      await this.gameService.playCard(kind, name)
+    } catch (e: any) {
+      //showErrorSnackbar(this.snackbar, `Couldn't play card: ${e.toString()}`);
+    }
   }
 }

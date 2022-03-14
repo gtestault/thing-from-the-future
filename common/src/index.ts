@@ -25,11 +25,13 @@ export class Deck {
 
 export interface Card {
     kind: CardKind
+    name: string
 }
 
 export type CardKind = "terrain" | "arc" | "object" | "mood"
 
 export class Arc implements Card {
+    public readonly name
     public readonly kind: CardKind = "arc"
     public readonly scenario: ArcScenario
     public readonly timeframe: ArcTimeframe
@@ -37,6 +39,7 @@ export class Arc implements Card {
     constructor(scenario: ArcScenario, timeframe: ArcTimeframe) {
         this.scenario = scenario
         this.timeframe = timeframe
+        this.name = scenario.name + " | " + timeframe
     }
 }
 

@@ -109,7 +109,7 @@ export class RoomService {
         if (room.gameState !== GameState.PLAYING_PLAYFIELD) {
             throw new ActionNotAllowedException()
         }
-        if (_.contains(room.playedCards.map(p => p.kind), card.kind)) {
+        if (_.includes(room.playedCards.map(p => p.kind), card.kind)) {
             throw new CardTypeAlreadyPlayedException()
         }
         if (player._id !== room.currentPlayer._id) {
@@ -130,10 +130,10 @@ export class RoomService {
             await room.save()
             return
         }
-        this.nextPlayerPlayfield(roomId)
+        await this.nextPlayerPlayfield(roomId)
         room.markModified("playerCards")
         room.markModified("playedCards")
-        await room.save()
+        await room.save();
     }
 
     async swapCards(roomId, player: Player) {
