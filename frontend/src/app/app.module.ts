@@ -67,6 +67,7 @@ import { TimerComponent } from './components/timer/timer.component';
     BrowserAnimationsModule,
     FormsModule,
     DragDropModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

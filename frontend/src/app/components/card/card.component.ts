@@ -42,14 +42,19 @@ export class CardComponent implements OnInit {
 
   playCard(category: string, term: string, time: string) {
     if (this.position === 'relative') {
-      if (category === 'arc' && !this.playedCards[0].category) {
-        this.position = 'absolute';
-        this.dragPosition = {x: 120, y: -280};
-        this.playedCards[0] = {
-          category: category,
-          term: term,
-          time: time,
-        };
+      if (category === 'arc') {
+        if (!this.playedCards[0].category) {
+          this.position = 'absolute';
+          this.dragPosition = {x: 120, y: -280};
+          this.playedCards[0] = {
+            category: category,
+            term: term,
+            time: time,
+          };
+        } else {
+          console.log('Category already played');
+        }
+
         this.cardService.playedCards.next(this.playedCards);
       } else if (category === 'terrain' && !this.playedCards[1].category) {
         this.position = 'absolute';
@@ -81,38 +86,5 @@ export class CardComponent implements OnInit {
       }
     }
     //TODO: set next Player
-  }
-
-  unplayCard(category: string) {
-    this.position = 'relative';
-    this.dragPosition = {x: 0, y: 0};
-    if (category === 'arc') {
-      this.playedCards[0] = {
-        category: '',
-        term: '',
-        time: ''
-      };
-    }
-    if (category === 'terrain') {
-      this.playedCards[1] = {
-        category: '',
-        term: '',
-        time: ''
-      };
-    }
-    if (category === 'object') {
-      this.playedCards[2] = {
-        category: '',
-        term: '',
-        time: ''
-      };
-    }
-    if (category === 'mood') {
-      this.playedCards[3] = {
-        category: '',
-        term: '',
-        time: ''
-      };
-    }
   }
 }
