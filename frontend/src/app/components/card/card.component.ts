@@ -51,38 +51,50 @@ export class CardComponent implements OnInit {
             term: term,
             time: time,
           };
+          this.cardService.playedCards.next(this.playedCards);
         } else {
-          console.log('Category already played');
+          alert('Category already played');
+        }
+      } else if (category === 'terrain') {
+        if (!this.playedCards[1].category) {
+          this.position = 'absolute';
+          this.dragPosition = {x: 280, y: -280};
+          this.playedCards[1] = {
+            category: category,
+            term: term,
+            time: time,
+          };
+          this.cardService.playedCards.next(this.playedCards);
+        } else {
+          alert('Category already played');
         }
 
-        this.cardService.playedCards.next(this.playedCards);
-      } else if (category === 'terrain' && !this.playedCards[1].category) {
-        this.position = 'absolute';
-        this.dragPosition = {x: 280, y: -280};
-        this.playedCards[1] = {
-          category: category,
-          term: term,
-          time: time,
-        };
-        this.cardService.playedCards.next(this.playedCards);
-      } else if (category === 'object' && !this.playedCards[2].category) {
-        this.position = 'absolute';
-        this.dragPosition = {x: 440, y: -280};
-        this.playedCards[2] = {
-          category: category,
-          term: term,
-          time: time,
-        };
-        this.cardService.playedCards.next(this.playedCards);
-      } else if (category === 'mood' && !this.playedCards[3].category) {
-        this.position = 'absolute';
-        this.dragPosition = {x: 600, y: -280};
-        this.playedCards[3] = {
-          category: category,
-          term: term,
-          time: time
-        };
-        this.cardService.playedCards.next(this.playedCards);
+      } else if (category === 'object') {
+        if (!this.playedCards[2].category) {
+          this.position = 'absolute';
+          this.dragPosition = {x: 440, y: -280};
+          this.playedCards[2] = {
+            category: category,
+            term: term,
+            time: time,
+          };
+          this.cardService.playedCards.next(this.playedCards);
+        } else {
+          alert('Category already played');
+        }
+      } else if (category === 'mood') {
+        if (!this.playedCards[3].category) {
+          this.position = 'absolute';
+          this.dragPosition = {x: 600, y: -280};
+          this.playedCards[3] = {
+            category: category,
+            term: term,
+            time: time
+          };
+          this.cardService.playedCards.next(this.playedCards);
+        } else {
+          alert('Category already played');
+        }
       }
     }
     //TODO: set next Player
