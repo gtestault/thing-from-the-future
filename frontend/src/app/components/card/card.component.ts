@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, HostBinding, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-card',
@@ -8,6 +8,9 @@ import {Component, Input, OnInit} from '@angular/core';
 export class CardComponent implements OnInit {
 
   constructor() { }
+
+  @HostBinding('style.position')
+  position = 'relative';
 
   @Input() category = "";
   @Input() term = "";
@@ -20,18 +23,17 @@ export class CardComponent implements OnInit {
 
   }
 
-  changePosition(category: string, position: any) {
+  playCard(category: string, term: string) {
     // if ( // noch nicht gelegt ) {
-    //
-    this.positionAbsolute = !this.positionAbsolute;
+    this.position = 'absolute';
       if (category === 'arc') {
-        this.dragPosition = {x: 50, y: 50};
+       this.dragPosition = {x: 120, y: -280};
       } else if (category === 'terrain') {
-
+        this.dragPosition = {x: 280, y: -280};
       } else if (category === 'object') {
-        // berechne position
+        this.dragPosition = {x: 440, y: -280};
       } else if (category === 'mood') {
-        // berechne position
+        this.dragPosition = {x: 600, y: -280};
       } else {
       }
     //
@@ -39,8 +41,5 @@ export class CardComponent implements OnInit {
 
 
     // this.dragPosition = {x: this.dragPosition.x + 50, y: this.dragPosition.y + 50};
-    console.log(category);
-    console.log(position);
-    console.log(this.dragPosition);
   }
 }

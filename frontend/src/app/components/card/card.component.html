@@ -1,7 +1,6 @@
-<div class="card" [class.absolute]="positionAbsolute" #card cdkDrag (click)="changePosition(category, card.offsetTop)"
+<div class="card" cdkDrag [cdkDragFreeDragPosition]="dragPosition" (click)="playCard(category, term)"
      [ngClass]="{'card-object': category === 'object', 'card-mood': category === 'mood',
-     'card-terrain': category === 'terrain', 'card-arc': category === 'arc'}"
-     [cdkDragFreeDragPosition]="dragPosition">
+     'card-terrain': category === 'terrain', 'card-arc': category === 'arc'}">
   <div>
     <div class="card-category">{{category}}</div>
     <div class="card-term">{{term}}</div>
