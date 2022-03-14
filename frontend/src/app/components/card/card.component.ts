@@ -33,7 +33,6 @@ export class CardComponent implements OnInit {
   @Input() kind = "";
   @Input() name = "";
 
-  dragPosition = {x: 0, y: 0};
 
   ngOnInit(): void {
     this.gameService.init()
@@ -76,7 +75,7 @@ export class CardComponent implements OnInit {
     try {
       await this.gameService.playCard(kind, name)
     } catch (e: any) {
-      //showErrorSnackbar(this.snackbar, `Couldn't play card: ${e.toString()}`);
+      showErrorSnackbar(this.snackbar, `Couldn't play card: ${e.toString()}`);
     }
   }
 }
