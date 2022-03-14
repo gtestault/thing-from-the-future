@@ -29,6 +29,7 @@ import {MatIconModule} from "@angular/material/icon";
 import { InvitePlayersDialogComponent } from './components/invite-players-dialog/invite-players-dialog.component';
 import {ClipboardModule} from "@angular/cdk/clipboard";
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { TimerComponent } from './components/timer/timer.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,9 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     JoinRoomDialogComponent,
     WaitingRoomComponent,
     PlayerConnectionStatusComponent,
-    InvitePlayersDialogComponent
+    InvitePlayersDialogComponent,
+    TimerComponent,
+    TimerComponent
   ],
   imports: [
     MatIconModule,
