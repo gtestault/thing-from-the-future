@@ -10,8 +10,7 @@
 }
 
 .card {
-  max-width: 60rem;
-  min-width: 60rem;
+  width: 60%;
   padding: 2rem 4rem;
   display: flex;
   flex-direction: column;
@@ -21,7 +20,8 @@
 }
 
 .text-field {
-  width: 40rem;
+  width: 90%;
+  background-color: white;
 }
 
 .submit-button {
@@ -33,7 +33,7 @@
 .your-future-thing-title {
   margin-top: 0;
   color: black;
-  font-size: 34pt;
+  font-size: xx-large;
   font-family: 'Bebas Neue', cursive;
   text-align: center;
 }
