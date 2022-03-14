@@ -24,10 +24,10 @@ export class CardComponent implements OnInit {
   }
 
   playCard(category: string, term: string) {
-    // if ( // noch nicht gelegt ) {
-    this.position = 'absolute';
+    if (this.position === 'relative') {
+      this.position = 'absolute';
       if (category === 'arc') {
-       this.dragPosition = {x: 120, y: -280};
+        this.dragPosition = {x: 120, y: -280};
       } else if (category === 'terrain') {
         this.dragPosition = {x: 280, y: -280};
       } else if (category === 'object') {
@@ -36,10 +36,9 @@ export class CardComponent implements OnInit {
         this.dragPosition = {x: 600, y: -280};
       } else {
       }
-    //
-    // }
-
-
-    // this.dragPosition = {x: this.dragPosition.x + 50, y: this.dragPosition.y + 50};
+    } else {
+      this.position = 'relative';
+      this.dragPosition = {x: 0, y: 0};
+    }
   }
 }
