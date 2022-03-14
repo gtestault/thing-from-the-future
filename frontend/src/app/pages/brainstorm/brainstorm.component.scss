@@ -2,16 +2,22 @@
 @import '../../../fonts';
 
 .container-brainstorm {
-  height: 97vh;
+  height: 95%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  padding: 1rem;
+}
+
+.played-cards-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  grid-column-gap: 0.5rem;
 }
 
 .card {
-  max-width: 60rem;
-  min-width: 60rem;
+  width: 60%;
   padding: 2rem 4rem;
   display: flex;
   flex-direction: column;
@@ -21,19 +27,27 @@
 }
 
 .text-field {
-  width: 40rem;
+  width: 90%;
+  background-color: white;
 }
 
 .submit-button {
   color: white;
   text-transform: uppercase;
   letter-spacing: 1px;
+  margin-top: 1rem;
 }
 
 .your-future-thing-title {
   margin-top: 0;
   color: black;
-  font-size: 34pt;
+  font-size: xx-large;
   font-family: 'Bebas Neue', cursive;
   text-align: center;
+}
+
+.timer {
+  color: white;
+  font-family: 'Bebas Neue', serif;
+  font-size: x-large;
 }

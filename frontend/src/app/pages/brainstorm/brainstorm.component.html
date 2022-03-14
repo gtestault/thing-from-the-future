@@ -1,13 +1,16 @@
 <div class="container-brainstorm">
-  <div></div>
+  <div class="played-cards-container">
+    <app-card *ngFor="let playedCard of playedCards" [category]="playedCard.category" [term]="playedCard.term" [time]="playedCard.time"></app-card>
+  </div>
+  <div class="timer">
+    30 seconds remaining
+  </div>
   <div class="card">
-    <p class="your-future-thing-title">your future thing</p>
-    <form class="future-thing-form">
+    <p class="your-future-thing-title">your thing from the future</p>
       <mat-form-field class="text-field" appearance="fill">
         <mat-label>Write your original invention</mat-label>
-        <textarea rows="8" matInput [matTextareaAutosize]="true"></textarea>
+        <textarea #story rows="8" matInput class="input"></textarea>
       </mat-form-field>
-    </form>
-    <button mat-raised-button color="accent" class="submit-button">submit</button>
+    <button mat-raised-button color="accent" class="submit-button" (click)="submit(story.value)" [disabled]="storySubmitted">submit</button>
   </div>
 </div>

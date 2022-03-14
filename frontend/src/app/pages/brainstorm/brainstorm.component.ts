@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {Card} from '../../../models/Card';
+import {CardService} from '../../services/card.service';
 
 @Component({
   selector: 'app-brainstorm',
@@ -7,9 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BrainstormComponent implements OnInit {
 
-  constructor() { }
+  storySubmitted = false;
+  playedCards: Card[] = [];
+
+  constructor(private cardService: CardService) { }
 
   ngOnInit(): void {
+    this.cardService.playedCards.subscribe(playedCards => {
+      this.playedCards = playedCards;
+    })
+  }
+
+  submit(story: string) {
+    this.storySubmitted = true;
+    //TODO: submit story
   }
 
 }

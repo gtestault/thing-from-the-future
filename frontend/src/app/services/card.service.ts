@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Card } from '../../models/Card';
 import {BehaviorSubject} from 'rxjs';
-import {GameService} from "./game.service";
 
 @Injectable({
   providedIn: 'root'
@@ -9,18 +8,18 @@ import {GameService} from "./game.service";
 export class CardService {
   //index 0 - 3: arc, terrain, object, mood
   playedCards = new BehaviorSubject<Card[]>([
-    {kind: '',
-      name: '',
+    {category: 'arc',
+      term: 'jkdebf',
+      time: 'sdkjbf'},
+    {category: 'terrain',
+      term: 'jksdnfuie',
       time: ''},
-    {kind: '',
-      name: '',
+    {category: 'object',
+      term: 'jfuiew',
       time: ''},
-    {kind: '',
-      name: '',
-      time: ''},
-    {kind: '',
-      name: '',
+    {category: 'mood',
+      term: 'kjdbcdf',
       time: ''}]);
 
-  constructor(gameService: GameService) { }
+  constructor() { }
 }
