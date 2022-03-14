@@ -33,6 +33,7 @@ import { SwapCardsButtonComponent } from './components/swap-cards-button/swap-ca
 import {BrainstormComponent} from "./pages/brainstorm/brainstorm.component";
 import { DrawBoardComponent } from './components/draw-board/draw-board.component';
 import { VotingComponent } from './pages/voting/voting.component';
+import { VotingCardComponent } from './components/voting-card/voting-card.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { VotingComponent } from './pages/voting/voting.component';
     BrainstormComponent,
     DrawBoardComponent,
     VotingComponent,
+    VotingCardComponent,
   ],
   imports: [
     MatIconModule,

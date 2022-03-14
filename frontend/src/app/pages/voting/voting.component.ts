@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FutureThingsService } from '../../services/future-things.service';
 
 @Component({
   selector: 'app-voting',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VotingComponent implements OnInit {
 
-  constructor() { }
+  futureThings: string[] = [];
+
+  constructor(private futureThingsService: FutureThingsService) { }
 
   ngOnInit(): void {
+    this.futureThingsService.futureThings.subscribe(futureThings => {
+      this.futureThings = futureThings;
+    })
   }
 
 }
