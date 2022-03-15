@@ -4,4 +4,5 @@ export class PlayerDataDto {
     username: string
     isCurrentPlayer: boolean
     cards: Card[]
+    futureThing: string
 }

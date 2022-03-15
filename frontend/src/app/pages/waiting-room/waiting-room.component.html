@@ -14,7 +14,7 @@
     </mat-list>
     <div class="waiting-room-option-buttons">
       <button mat-raised-button color="primary" (click)="onInvitePlayers()">invite new players</button>
-      <button mat-raised-button color="accent" (click)="onStartGame()">start game</button>
+      <button mat-raised-button color="accent" (click)="onStartGame()" [disabled]="!isAdmin">start game</button>
     </div>
   </div>
 </div>

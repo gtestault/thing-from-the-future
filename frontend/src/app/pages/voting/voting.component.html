@@ -1,5 +1,6 @@
 <h1 class="game-title">The Thing From The Future</h1>
-<div class="timer">30 seconds remaining</div>
+<app-exit-room-button class="exit-button"></app-exit-room-button>
+<div class="timer">{{timeRemaining}} seconds remaining</div>
 <div class="voting-cards-container">
-  <app-voting-card *ngFor="let futureThing of futureThings" [text]="futureThing"></app-voting-card>
+  <app-voting-card *ngFor="let futureThing of futureThings" [author]="futureThing.username" [text]="futureThing.idea"></app-voting-card>
 </div>

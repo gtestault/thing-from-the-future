@@ -1,4 +1,7 @@
 import {Component, HostBinding, Input, OnInit} from '@angular/core';
+import {GameService} from "../../services/game.service";
+import {showErrorSnackbar, showSuccessSnackbar} from "../../utils/snackbar";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-voting-card',
@@ -11,16 +14,26 @@ export class VotingCardComponent implements OnInit {
   border = '2px solid $tftf-green';
 
   @Input() text = '';
+  @Input() author = '';
 
   voted = false;
 
-  constructor() { }
+  constructor(
+    private gameService: GameService,
+    private snackbar: MatSnackBar,
+  ) { }
 
   ngOnInit(): void {
+    this.gameService.init()
   }
 
-  vote() {
-    this.voted = true;
+  async vote() {
+    try {
+      await this.gameService.submitVote(this.author)
+      showSuccessSnackbar(this.snackbar, `you voted for ${this.author}'s idea!`)
+    } catch (e) {
+      showErrorSnackbar(this.snackbar, `Failed to vote: ${e.toString()}`)
+    }
   }
 
 }

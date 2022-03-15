@@ -14,6 +14,7 @@ const LEAVE_ROOM_ACTION = 'leave-room'
 const START_GAME_ACTION = 'start-game';
 const SWAP_CARDS_ACTION = 'swap-cards';
 const SUBMIT_STORY_ACTION = 'submit-story'
+const SUBMIT_VOTE_ACTION = 'submit-vote'
 const PLAY_CARD_ACTION = 'play-card';
 
 const UPDATE_EVENT = 'update';
@@ -140,6 +141,18 @@ export class GameService {
   submitStory(text: string): Promise<void> {
     return new Promise((resolve, reject) => {
       this.getSocket().emit(SUBMIT_STORY_ACTION, {text}, (res: any) => {
+          if (GameService.isException(res)) {
+            reject(new Error(res.message));
+          }
+          resolve();
+        }
+      );
+    });
+  }
+
+  submitVote(username: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.getSocket().emit(SUBMIT_VOTE_ACTION, {username}, (res: any) => {
           if (GameService.isException(res)) {
             reject(new Error(res.message));
           }

@@ -3,7 +3,7 @@ import * as xkcd from "xkcd-password"
 import {Player} from "../player/schemas/player.schema";
 import {InjectModel} from "@nestjs/mongoose";
 import {Model} from "mongoose";
-import {GameState, PlayerCards, Room, RoomDocument} from "./schemas/room.schema";
+import {GameState, PlayerCards, PlayerStories, Room, RoomDocument} from "./schemas/room.schema";
 import * as _ from "lodash"
 import {Socket} from "socket.io";
 import {Card, DeckBuilder} from "thing-from-the-future-utils";
@@ -87,11 +87,11 @@ export class RoomService {
         if (room.gameState !== GameState.PLAYING_IDEA_SELECTION) {
             throw new ActionNotAllowedException()
         }
-        if (!_.includes(room.players.map(p => p.username))) {
+        if (!_.includes(room.players.map(p => p.username), username)) {
             throw new PlayerDoesNotExistException()
         }
         room.playerPoints[username] += 1
-        const everyBodyHasVoted = _.sum(Object.values(room.playerStories)) == room.players.length
+        const everyBodyHasVoted = _.sum(Object.values(room.playerPoints)) >= room.players.length
         if (everyBodyHasVoted) {
             room.gameState = GameState.WINNER_ANNOUNCEMENT
         }
@@ -139,7 +139,20 @@ export class RoomService {
                 break;
             case GameState.PLAYING_BRAINSTORM:
                 room.timeRemaining -= 1
+                if (room.timeRemaining <= 0) {
+                    //TODO: What happens if no ideas?
+                    room.gameState = GameState.PLAYING_IDEA_SELECTION
+                    room.timeRemaining = RoomService.IDEA_SELECTION_PLAYTIME_SECONDS
+                }
                 await room.save()
+                break;
+            case GameState.PLAYING_IDEA_SELECTION:
+                room.timeRemaining -= 1
+                if (room.timeRemaining <= 0) {
+                    room.gameState = GameState.WINNER_ANNOUNCEMENT
+                }
+                await room.save()
+                break;
             default:
                 return
         }
@@ -239,7 +252,7 @@ export class RoomService {
         const gameData: GameTickDTO = {
             roomId: room._id,
             playedCards: room.playedCards,
-            players: this.getAggregatedPlayerData(room.players, room.playerQueue, room.playerCards, room.currentPlayer),
+            players: this.getAggregatedPlayerData(room.players, room.playerQueue, room.playerCards, room.playerStories, room.currentPlayer),
             timeRemaining: room.timeRemaining,
             admin: room.admin,
             gameState: room.gameState
@@ -247,13 +260,14 @@ export class RoomService {
         return gameData
     }
 
-    getAggregatedPlayerData(players: Player[], playerQueue: Player[], playerCards: PlayerCards, currentPlayer: Player): PlayerDataDto[] {
+    getAggregatedPlayerData(players: Player[], playerQueue: Player[], playerCards: PlayerCards, playerStories: PlayerStories, currentPlayer: Player): PlayerDataDto[] {
         const playerData: PlayerDataDto[] = []
         for (let player of players) {
             const data: PlayerDataDto = {
                 username: player.username,
                 isCurrentPlayer: currentPlayer && currentPlayer._id === player._id,
-                cards: playerCards[player.username]
+                cards: playerCards[player.username],
+                futureThing: playerStories[player.username],
             }
             playerData.push(data)
         }

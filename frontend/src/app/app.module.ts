@@ -44,7 +44,6 @@ import { VotingCardComponent } from './components/voting-card/voting-card.compon
     PlayersCardsComponent,
     CardFieldComponent,
     TurnIndicatorComponent,
-    EmptyCardSpaceComponent,
     EmptyCardSpacesComponent,
     UsernameSelectionComponent,
     RoomSelectionComponent,

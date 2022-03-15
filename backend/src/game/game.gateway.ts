@@ -23,7 +23,6 @@ import {Player} from "../player/schemas/player.schema";
 import {JoinRoomDto} from "./dto/join-room-dto";
 import {Interval} from "@nestjs/schedule";
 import {GameTickDTO} from "./dto/game-tick-dto";
-import * as _ from "lodash"
 import {PlayerService} from "../player/player.service";
 import {RoomNotFoundException} from "./exceptions/room-not-found-exception";
 import {WsAckExceptionFilter} from "./filters/ws-ack-exception-filter";
