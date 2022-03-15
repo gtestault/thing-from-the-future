@@ -7,8 +7,8 @@ import {Component, HostBinding, Input, OnInit} from '@angular/core';
 })
 export class VotingCardComponent implements OnInit {
 
-  @HostBinding('style.voted')
-  border = '2px solid $tftf-green';
+  @HostBinding('style.border')
+  border = '5px solid #FFF7CA';
 
   @Input() text = '';
 
@@ -21,6 +21,7 @@ export class VotingCardComponent implements OnInit {
 
   vote() {
     this.voted = true;
+    this.border = '5px solid #36B722';
   }
 
 }
