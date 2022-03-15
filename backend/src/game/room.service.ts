@@ -22,7 +22,8 @@ export class RoomService {
     private static PLAYER_CARDS_COUNT = 7
     private static PLAYFIELD_MAX_CARDS = 4
     public static PLAYER_TURN_TIME_SECONDS = 30
-    private static BRAINSTORM_PLAYTIME_SECONDS = 120
+    private static BRAINSTORM_PLAYTIME_SECONDS = 240
+    private static IDEA_SELECTION_PLAYTIME_SECONDS = 180
 
     constructor(@InjectModel(Room.name) private roomModel: Model<RoomDocument>) {
     }
