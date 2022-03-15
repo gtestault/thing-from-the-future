@@ -10,6 +10,12 @@
   padding: 1rem;
 }
 
+.game-title {
+  color: white;
+  font-family: 'Bebas Neue', sans-serif;
+  text-align: center;
+}
+
 .played-cards-container {
   display: grid;
   grid-template-columns: auto auto auto auto;
