@@ -34,7 +34,6 @@ import { DrawBoardComponent } from './components/draw-board/draw-board.component
 import { ExitRoomButtonComponent } from './components/exit-room-button/exit-room-button.component';
 import { VotingComponent } from './pages/voting/voting.component';
 import { VotingCardComponent } from './components/voting-card/voting-card.component';
-import { WinnerAnouncementComponent } from './pages/winner-anouncement/winner-anouncement.component';
 import { WinnerAnnouncementComponent } from './pages/winner-announcement/winner-announcement.component';
 
 @NgModule({
@@ -59,7 +58,6 @@ import { WinnerAnnouncementComponent } from './pages/winner-announcement/winner-
     ExitRoomButtonComponent,
     VotingComponent,
     VotingCardComponent,
-    WinnerAnouncementComponent,
     WinnerAnnouncementComponent,
   ],
   imports: [
