@@ -31,6 +31,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { SwapCardsButtonComponent } from './components/swap-cards-button/swap-cards-button.component';
 import {BrainstormComponent} from "./pages/brainstorm/brainstorm.component";
 import { DrawBoardComponent } from './components/draw-board/draw-board.component';
+import { ExitRoomButtonComponent } from './components/exit-room-button/exit-room-button.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { DrawBoardComponent } from './components/draw-board/draw-board.component
     SwapCardsButtonComponent,
     BrainstormComponent,
     DrawBoardComponent,
+    ExitRoomButtonComponent,
   ],
   imports: [
     MatIconModule,

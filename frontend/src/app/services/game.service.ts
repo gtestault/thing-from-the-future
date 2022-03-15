@@ -10,8 +10,10 @@ import {PlayCardDto} from "./dto/play-card-dto";
 
 const NEW_ROOM_ACTION = 'new-room';
 const JOIN_ROOM_ACTION = 'join-room';
+const LEAVE_ROOM_ACTION = 'leave-room'
 const START_GAME_ACTION = 'start-game';
 const SWAP_CARDS_ACTION = 'swap-cards';
+const SUBMIT_STORY_ACTION = 'submit-story'
 const PLAY_CARD_ACTION = 'play-card';
 
 const UPDATE_EVENT = 'update';
@@ -84,6 +86,18 @@ export class GameService {
     });
   }
 
+  leaveRoom(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.getSocket().emit(LEAVE_ROOM_ACTION, JSON.stringify({}), (res: any) => {
+          if (GameService.isException(res)) {
+            reject(new Error(res.message));
+          }
+          resolve();
+        }
+      );
+    });
+  }
+
   joinRoom(roomId: string): Promise<void> {
     return new Promise((resolve, reject) => {
       const joinRoomRequest: JoinRoomDto = {roomId};
@@ -114,6 +128,18 @@ export class GameService {
   swapCards(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.getSocket().emit(SWAP_CARDS_ACTION, {}, (res: any) => {
+          if (GameService.isException(res)) {
+            reject(new Error(res.message));
+          }
+          resolve();
+        }
+      );
+    });
+  }
+
+  submitStory(text: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.getSocket().emit(SUBMIT_STORY_ACTION, {text}, (res: any) => {
           if (GameService.isException(res)) {
             reject(new Error(res.message));
           }

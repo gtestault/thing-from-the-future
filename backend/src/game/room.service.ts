@@ -6,7 +6,7 @@ import {Model} from "mongoose";
 import {GameState, PlayerCards, Room, RoomDocument} from "./schemas/room.schema";
 import * as _ from "lodash"
 import {Socket} from "socket.io";
-import {Card, Deck, DeckBuilder} from "thing-from-the-future-utils";
+import {Card, DeckBuilder} from "thing-from-the-future-utils";
 import {ActionNotAllowedException} from "./exceptions/action-not-allowed-exception";
 import {CardTypeAlreadyPlayedException} from "./exceptions/card-type-already-played-exception";
 import {NotYourTurnException} from "./exceptions/not-your-turn-exception";
@@ -14,6 +14,7 @@ import {CardNotOwnedException} from "./exceptions/card-not-owned-exception";
 import {RoomAdminActionException} from "./exceptions/room-admin-action-exception";
 import {PlayerDataDto} from "./dto/player-data-dto";
 import {GameTickDTO} from "./dto/game-tick-dto";
+import {PlayerDoesNotExistException} from "./exceptions/player-does-not-exist-exception";
 
 @Injectable()
 export class RoomService {
@@ -21,7 +22,7 @@ export class RoomService {
     private static PLAYER_CARDS_COUNT = 7
     private static PLAYFIELD_MAX_CARDS = 4
     public static PLAYER_TURN_TIME_SECONDS = 30
-    private static BRAINSTORM_PLAYTIME_SECONDS = 60
+    private static BRAINSTORM_PLAYTIME_SECONDS = 120
 
     constructor(@InjectModel(Room.name) private roomModel: Model<RoomDocument>) {
     }
@@ -41,7 +42,11 @@ export class RoomService {
         const roomId = passphrase.join('-')
         const room = new this.roomModel({_id: roomId, admin: player})
         room.playerCards = {}
+        room.playerStories = {}
+        room.playerPoints = {}
         await room.markModified("playerCards")
+        await room.markModified("playerStories")
+        await room.markModified("playerPoints")
         await room.save()
         this.logger.log(`created new room with id: ${roomId} with admin ${player.username}`)
         return roomId
@@ -63,6 +68,36 @@ export class RoomService {
         await room.save()
     }
 
+    async submitStory(roomId: string, player: Player, story: string) {
+        let room = await this.getRoomById(roomId)
+        if (room.gameState !== GameState.PLAYING_BRAINSTORM) {
+            throw new ActionNotAllowedException()
+        }
+        room.playerStories[player.username] = story
+        const everyBodyHasWrittenStory = Object.keys(room.playerStories).length == room.players.length
+        if (everyBodyHasWrittenStory) {
+           room.gameState = GameState.PLAYING_IDEA_SELECTION
+        }
+        room.markModified('playerStories')
+        await room.save()
+    }
+    async submitVote(roomId: string, player: Player, username: string) {
+        let room = await this.getRoomById(roomId)
+        if (room.gameState !== GameState.PLAYING_IDEA_SELECTION) {
+            throw new ActionNotAllowedException()
+        }
+        if (!_.includes(room.players.map(p => p.username))) {
+            throw new PlayerDoesNotExistException()
+        }
+        room.playerPoints[username] += 1
+        const everyBodyHasVoted = _.sum(Object.values(room.playerStories)) == room.players.length
+        if (everyBodyHasVoted) {
+            room.gameState = GameState.WINNER_ANNOUNCEMENT
+        }
+        room.markModified('playerPoints')
+        await room.save()
+    }
+
     async startGame(roomId: string, player: Player) {
         let room = await this.getRoomById(roomId)
         if (room.admin._id !== player._id) {
@@ -77,12 +112,14 @@ export class RoomService {
                 playerCards.push(deck.drawRandomWithReplacement())
             }
             room.playerCards[player.username] = playerCards
+            room.playerPoints[player.username] = 0
         }
         room.deck = deck
         room.playerQueue = room.players;
         room.currentPlayer = room.playerQueue.shift()
         room.markModified("deck")
         room.markModified("playerCards")
+        room.markModified("playerPoints")
         await room.save()
     }
 
@@ -99,6 +136,9 @@ export class RoomService {
                     await this.nextPlayerPlayfield(roomId)
                 }
                 break;
+            case GameState.PLAYING_BRAINSTORM:
+                room.timeRemaining -= 1
+                await room.save()
             default:
                 return
         }
@@ -147,7 +187,7 @@ export class RoomService {
         let newPlayerCards: Card[] = []
         const cardDeck = DeckBuilder.getInstance().baseDeck()
         for (let i = 0; i < RoomService.PLAYER_CARDS_COUNT; i++) {
-            newPlayerCards.push(cardDeck.drawRandom())
+            newPlayerCards.push(cardDeck.drawRandomWithReplacement())
         }
         room.playerCards[player.username] = newPlayerCards
         room.markModified("playerCards")
@@ -185,7 +225,7 @@ export class RoomService {
     }
 
     async leaveRoom(roomId: string, player: Player) {
-        let room = await this.roomModel.findById(roomId).populate('players').exec()
+        let room = await this.getRoomById(roomId)
         room.players = room.players.filter(p => p._id !== player._id)
         if (room.players.length == 0) {
             await room.delete()

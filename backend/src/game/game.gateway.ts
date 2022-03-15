@@ -9,10 +9,10 @@ import {Server, Socket} from 'socket.io';
 import {Logger, UseFilters, UseGuards, UsePipes, ValidationPipe} from "@nestjs/common";
 import {BadRequestTransformationFilter} from "./filters/bad-request-transformation";
 import {
-    JOIN_ROOM_ACTION,
+    JOIN_ROOM_ACTION, LEAVE_ROOM_ACTION,
     NEW_ROOM_ACTION,
     PLAY_CARD_ACTION,
-    START_GAME_ACTION,
+    START_GAME_ACTION, SUBMIT_STORY_ACTION, SUBMIT_VOTE_ACTION,
     SWAP_CARDS_ACTION
 } from "./actions/actions";
 import {RoomService} from "./room.service";
@@ -30,6 +30,8 @@ import {WsAckExceptionFilter} from "./filters/ws-ack-exception-filter";
 import {OkResponse} from "./responses/ok-response";
 import {PlayCardDto} from "./dto/play-card-dto";
 import {LOGOUT_PLAYER_EVENT, GAME_UDPATE_EVENT} from "./events/events";
+import {SubmitStoryDto} from "./dto/submit-story-dto";
+import {SubmitVoteDto} from "./dto/submit-vote-dto";
 
 @UseFilters(new BadRequestTransformationFilter())
 @UseFilters(new WsAckExceptionFilter())
@@ -61,6 +63,18 @@ export class GameGateway implements OnGatewayConnection<Socket>, OnGatewayDiscon
         return roomId
     }
 
+    @SubscribeMessage(LEAVE_ROOM_ACTION)
+    async leaveRoom(
+        @MessageBody() leaveRoomDto: EmptyObjectDTO,
+        @ConnectedSocket() s: Socket,
+        @PlayerFetcher() p: Player
+    ) {
+        const playerRoom = await this.roomService.getPlayerRoom(p._id)
+        await this.roomService.leaveRoom(playerRoom._id, p)
+        this.logger.log(`player ${p.username} left game room ${playerRoom._id}.`)
+        return OkResponse
+    }
+
     @SubscribeMessage(JOIN_ROOM_ACTION)
     async joinRoom(
         @MessageBody() joinRoom: JoinRoomDto,
@@ -74,6 +88,18 @@ export class GameGateway implements OnGatewayConnection<Socket>, OnGatewayDiscon
         await this.roomService.joinRoom(joinRoom.roomId, p, s)
         s.join(joinRoom.roomId)
         this.logger.log(`'${p.username}' joined room '${joinRoom.roomId}'`)
+        return OkResponse
+    }
+
+    @SubscribeMessage(SUBMIT_VOTE_ACTION)
+    async submitVote(
+        @MessageBody() submitVoteDto: SubmitVoteDto,
+        @ConnectedSocket() s: Socket,
+        @PlayerFetcher() p: Player
+    ) {
+        const playerRoom = await this.roomService.getPlayerRoom(p._id)
+        await this.roomService.submitVote(playerRoom._id, p, submitVoteDto.username)
+        this.logger.log(`'${p.username}' voted for the idea of '${submitVoteDto.username}'`)
         return OkResponse
     }
 
@@ -111,6 +137,17 @@ export class GameGateway implements OnGatewayConnection<Socket>, OnGatewayDiscon
         this.logger.log(`card was played: ${JSON.stringify(playCardDTO.card)}`)
         await this.roomService.playCard(playerRoom._id, p, playCardDTO.card)
         this.sendGameUpdate(playerRoom._id)
+        return OkResponse
+    }
+
+    @SubscribeMessage(SUBMIT_STORY_ACTION)
+    async submitStory(
+        @MessageBody() submitStoryDto: SubmitStoryDto,
+        @ConnectedSocket() s: Socket,
+        @PlayerFetcher() p: Player
+    ) {
+        const playerRoom = await this.roomService.getPlayerRoom(p._id)
+        await this.roomService.submitStory(playerRoom._id, p, submitStoryDto.text)
         return OkResponse
     }
 

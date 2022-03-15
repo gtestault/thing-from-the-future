@@ -11,12 +11,20 @@ export enum GameState {
     PLAYING_PLAYFIELD = "PLAYING_PLAYFIELD",
     PLAYING_BRAINSTORM = "PLAYING_BRAINSTORM",
     PLAYING_IDEA_SELECTION = "PLAYING_IDEA_SELECTION",
+    WINNER_ANNOUNCEMENT = "WINNER_ANNOUNCEMENT",
 }
 
 export type PlayerCards = {
     [username: string]: Card[]
 }
 
+export type PlayerStories = {
+    [username: string]: string
+}
+
+export type PlayerPoints = {
+    [username: string]: number
+}
 @Schema({minimize: false, versionKey: false})
 export class Room {
     @Prop()
@@ -35,6 +43,10 @@ export class Room {
     timeRemaining: number
     @Prop({type: mongoose.Schema.Types.Mixed})
     playerCards: PlayerCards
+    @Prop({type: mongoose.Schema.Types.Mixed})
+    playerStories: PlayerStories
+    @Prop({type: mongoose.Schema.Types.Mixed})
+    playerPoints: PlayerPoints
     @Prop({type: mongoose.Schema.Types.Mixed, default: []})
     playedCards: Card[]
     @Prop({type: mongoose.Schema.Types.Mixed})

@@ -1,9 +1,10 @@
 <div class="container-brainstorm">
+  <app-exit-room-button class="exit-button"></app-exit-room-button>
   <div class="played-cards-container">
-    <app-card *ngFor="let playedCard of playedCards" [category]="playedCard.category" [term]="playedCard.term" [time]="playedCard.time"></app-card>
+    <app-card *ngFor="let playedCard of playedCards" [kind]="playedCard.kind" [name]="playedCard.name"></app-card>
   </div>
   <div class="timer">
-    30 seconds remaining
+    {{timeRemaining}} seconds remaining
   </div>
   <div class="card">
     <p class="your-future-thing-title">your thing from the future</p>

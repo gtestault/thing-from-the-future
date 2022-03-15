@@ -16,6 +16,12 @@
   grid-column-gap: 0.5rem;
 }
 
+.exit-button {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+}
+
 .card {
   width: 60%;
   padding: 2rem 4rem;
@@ -49,5 +55,5 @@
 .timer {
   color: white;
   font-family: 'Bebas Neue', serif;
-  font-size: x-large;
+  font-size: xxx-large;
 }
