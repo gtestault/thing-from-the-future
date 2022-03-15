@@ -1,6 +1,13 @@
 @import '../../../colors';
 @import '../../../fonts';
 
+:host {
+  display: grid;
+  grid-template-rows: auto 1fr 2fr;
+  align-content: center;
+  height: 100%;
+}
+
 .game-title {
   color: white;
   font-family: 'Bebas Neue', sans-serif;
@@ -12,9 +19,11 @@
   font-family: 'Bebas Neue', serif;
   font-size: x-large;
   text-align: center;
+  align-self: end;
 }
 
 .voting-cards-container {
+  align-self: center;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -22,4 +31,5 @@
   align-content: center;
   justify-content: center;
   margin-top: 2rem;
+  margin-bottom: 1rem;
 }
