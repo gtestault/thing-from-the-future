@@ -1,4 +1,4 @@
-<div class="container-cards">
-  <app-card *ngFor="let card of cards" [category]="card.category" [term]="card.term" [time]="card.time">
+<div class="container-cards" [ngClass]="{'container-cards-not-my-turn': !isMyTurn}">
+  <app-card [canPlay]="isMyTurn && !isKindPlayed(card.kind)" *ngFor="let card of cards" [kind]="card.kind" [name]="card.name">
   </app-card>
 </div>

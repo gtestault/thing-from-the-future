@@ -20,6 +20,7 @@ import {GameState} from "../../services/models/game-state";
 export class WaitingRoomComponent implements OnInit, OnDestroy {
   ownUsername = '';
   players: Player[] = [];
+  isAdmin = false;
   roomId = '';
   gameUpdatesSubscription: Subscription | null = null;
 
@@ -51,6 +52,7 @@ export class WaitingRoomComponent implements OnInit, OnDestroy {
       if (update.gameState === GameState.PLAYING_PLAYFIELD) {
         this.router.navigateByUrl(`${PLAYFIELD_PATH}`);
       }
+      this.isAdmin = update.admin.username == this.ownUsername
       this.players = update.players;
       this.roomId = update.roomId;
     });
@@ -72,6 +74,7 @@ export class WaitingRoomComponent implements OnInit, OnDestroy {
       await this.gameService.startGame();
     } catch (e: any) {
       showErrorSnackbar(this.snackBar, `Couldn't start game ${e.toString()}`);
+      return
     }
     this.router.navigateByUrl(`${PLAYFIELD_PATH}`);
   }

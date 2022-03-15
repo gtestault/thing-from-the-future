@@ -8,6 +8,8 @@ export interface GameTick {
   timeRemaining: number;
   roomId: string;
   players: PlayerData[];
+  playedCards: Card[];
+  winner: Player;
   admin: Player;
   gameState: string;
 }

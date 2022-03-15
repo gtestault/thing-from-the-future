@@ -1,6 +1,6 @@
 {
   "name": "thing-from-the-future-utils",
-  "version": "1.13.0",
+  "version": "1.17.0",
   "description": "",
   "type": "module",
   "source": "src/index.ts",

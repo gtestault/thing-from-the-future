@@ -12,6 +12,11 @@
   font-size: large;
 }
 
+.cannot-play {
+  cursor: not-allowed!important;
+  opacity: 0.4!important;
+}
+
 .position-absolute {
   position: absolute;
 }

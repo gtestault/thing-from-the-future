@@ -9,10 +9,13 @@ import {
   PLAYFIELD_PATH,
   ROOM_SELECTION_PATH, WAITING_ROOM_JOIN_PATH,
   WAITING_ROOM_PATH,
-  WAITING_ROOM_PATH_ROOM_ID_VARIABLE
+  WAITING_ROOM_PATH_ROOM_ID_VARIABLE,
+  VOTING_PATH, WINNER_ANNOUNCEMENT_PATH
 } from './routes';
 import {WaitingRoomComponent} from './pages/waiting-room/waiting-room.component';
 import {BrainstormComponent} from "./pages/brainstorm/brainstorm.component";
+import {VotingComponent} from './pages/voting/voting.component';
+import {WinnerAnnouncementComponent} from "./pages/winner-announcement/winner-announcement.component";
 
 
 const routes: Routes = [
@@ -22,6 +25,8 @@ const routes: Routes = [
   {path: WAITING_ROOM_JOIN_PATH, component: WaitingRoomComponent, canActivate: [PlayerRegisteredGuard]},
   {path: WAITING_ROOM_PATH, component: WaitingRoomComponent, canActivate: [PlayerRegisteredGuard]},
   {path: BRAINSTORM_PATH, component: BrainstormComponent, canActivate: [PlayerRegisteredGuard]},
+  {path: VOTING_PATH, component: VotingComponent, canActivate: [PlayerRegisteredGuard]},
+  {path: WINNER_ANNOUNCEMENT_PATH, component: WinnerAnnouncementComponent, canActivate: [PlayerRegisteredGuard]},
   {path: '**', component: UsernameSelectionComponent},
 ];
 

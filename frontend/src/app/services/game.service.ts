@@ -6,11 +6,16 @@ import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs';
 import {GameTick} from './models/game-tick';
 import {Router} from "@angular/router";
+import {PlayCardDto} from "./dto/play-card-dto";
 
 const NEW_ROOM_ACTION = 'new-room';
 const JOIN_ROOM_ACTION = 'join-room';
+const LEAVE_ROOM_ACTION = 'leave-room'
 const START_GAME_ACTION = 'start-game';
 const SWAP_CARDS_ACTION = 'swap-cards';
+const SUBMIT_STORY_ACTION = 'submit-story'
+const SUBMIT_VOTE_ACTION = 'submit-vote'
+const PLAY_CARD_ACTION = 'play-card';
 
 const UPDATE_EVENT = 'update';
 const LOGOUT_PLAYER_EVENT = 'logout-player';
@@ -59,6 +64,7 @@ export class GameService {
     return this.socket;
   }
 
+
   subscribeToGameUpdates(): Observable<GameTick> {
     return this.gameUpdates;
   }
@@ -81,6 +87,18 @@ export class GameService {
     });
   }
 
+  leaveRoom(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.getSocket().emit(LEAVE_ROOM_ACTION, JSON.stringify({}), (res: any) => {
+          if (GameService.isException(res)) {
+            reject(new Error(res.message));
+          }
+          resolve();
+        }
+      );
+    });
+  }
+
   joinRoom(roomId: string): Promise<void> {
     return new Promise((resolve, reject) => {
       const joinRoomRequest: JoinRoomDto = {roomId};
@@ -95,9 +113,46 @@ export class GameService {
     });
   }
 
+  playCard(kind: string, name: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      let playCardDto: PlayCardDto = {card: {kind: kind, name: name}}
+      this.getSocket().emit(PLAY_CARD_ACTION, playCardDto, (res: any) => {
+          if (GameService.isException(res)) {
+            reject(new Error(res.message));
+          }
+          resolve();
+        }
+      );
+    });
+  }
+
   swapCards(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.getSocket().emit(SWAP_CARDS_ACTION, {}, (res: any) => {
+          if (GameService.isException(res)) {
+            reject(new Error(res.message));
+          }
+          resolve();
+        }
+      );
+    });
+  }
+
+  submitStory(text: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.getSocket().emit(SUBMIT_STORY_ACTION, {text}, (res: any) => {
+          if (GameService.isException(res)) {
+            reject(new Error(res.message));
+          }
+          resolve();
+        }
+      );
+    });
+  }
+
+  submitVote(username: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.getSocket().emit(SUBMIT_VOTE_ACTION, {username}, (res: any) => {
           if (GameService.isException(res)) {
             reject(new Error(res.message));
           }

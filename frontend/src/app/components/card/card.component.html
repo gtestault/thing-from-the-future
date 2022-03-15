@@ -1,9 +1,8 @@
-<div class="card" cdkDrag [cdkDragFreeDragPosition]="dragPosition" (click)="playCard(category, term, time)"
-     [ngClass]="{'card-object': category === 'object', 'card-mood': category === 'mood',
-     'card-terrain': category === 'terrain', 'card-arc': category === 'arc'}">
+<div class="card" (click)="playCard(kind, name)"
+     [ngClass]="{'card-object': kind === 'object', 'card-mood': kind === 'mood',
+     'card-terrain': kind === 'terrain', 'card-arc': kind === 'arc', 'cannot-play': !canPlay && !staticCard}">
   <div>
-    <div class="card-category">{{category}}</div>
-    <div class="card-term">{{term}}</div>
-    <div *ngIf="term" class="time">{{time}}</div>
+    <div class="card-category">{{kind}}</div>
+    <div class="card-term">{{name}}</div>
   </div>
 </div>

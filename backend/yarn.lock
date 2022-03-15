@@ -5234,10 +5234,10 @@ text-table@^0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
 
-thing-from-the-future-utils@1.13.0:
-  version "1.13.0"
-  resolved "https://registry.yarnpkg.com/thing-from-the-future-utils/-/thing-from-the-future-utils-1.13.0.tgz#a6a306a539550cd8b4bc0807b9415f22edd544fd"
-  integrity sha512-VTHjvT986XI2lzOcxM3JvyIkycTZbh1qY1hBARBHzbVgqhvuigqxlSkbt/4+xnvV8QfEK508osGC8z1dUkpZiw==
+thing-from-the-future-utils@1.17.0:
+  version "1.17.0"
+  resolved "https://registry.yarnpkg.com/thing-from-the-future-utils/-/thing-from-the-future-utils-1.17.0.tgz#63b31f46790e96285702c42ebb5077a02b907907"
+  integrity sha512-XfsLacI7FmXiGFWX3281vsPFQ53ACnKar6LP+QhJBnbHyIiAnFmo3QUDibPGSoEE7SLQIMT61b623TRRHid9ug==
   dependencies:
     copyfiles "^2.4.1"
 

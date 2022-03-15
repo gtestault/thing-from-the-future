@@ -9,7 +9,6 @@ import {PlayerOverviewComponent} from './components/player-overview/player-overv
 import {PlayersCardsComponent} from './components/players-cards/players-cards.component';
 import {CardFieldComponent} from './components/card-field/card-field.component';
 import {TurnIndicatorComponent} from './components/turn-indicator/turn-indicator.component';
-import {EmptyCardSpaceComponent} from './components/empty-card-space/empty-card-space.component';
 import {EmptyCardSpacesComponent} from './components/empty-card-spaces/empty-card-spaces.component';
 import {UsernameSelectionComponent} from './pages/username-selection/username-selection.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -32,6 +31,11 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { SwapCardsButtonComponent } from './components/swap-cards-button/swap-cards-button.component';
 import {BrainstormComponent} from "./pages/brainstorm/brainstorm.component";
 import { DrawBoardComponent } from './components/draw-board/draw-board.component';
+import { ExitRoomButtonComponent } from './components/exit-room-button/exit-room-button.component';
+import { VotingComponent } from './pages/voting/voting.component';
+import { VotingCardComponent } from './components/voting-card/voting-card.component';
+import { WinnerAnnouncementComponent } from './pages/winner-announcement/winner-announcement.component';
+import { ResultCardComponent } from './components/result-card/result-card.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +46,6 @@ import { DrawBoardComponent } from './components/draw-board/draw-board.component
     PlayersCardsComponent,
     CardFieldComponent,
     TurnIndicatorComponent,
-    EmptyCardSpaceComponent,
     EmptyCardSpacesComponent,
     UsernameSelectionComponent,
     RoomSelectionComponent,
@@ -53,6 +56,11 @@ import { DrawBoardComponent } from './components/draw-board/draw-board.component
     SwapCardsButtonComponent,
     BrainstormComponent,
     DrawBoardComponent,
+    ExitRoomButtonComponent,
+    VotingComponent,
+    VotingCardComponent,
+    WinnerAnnouncementComponent,
+    ResultCardComponent,
   ],
   imports: [
     MatIconModule,

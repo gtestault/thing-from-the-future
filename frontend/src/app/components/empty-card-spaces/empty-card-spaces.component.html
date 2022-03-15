@@ -1,8 +1,27 @@
 <div class="container-empty-card-spaces">
-  <div *ngFor="let card of cards"></div>
-  <div class="card card-arc"></div>
-  <div class="card card-terrain"></div>
-  <div class="card card-object"></div>
-  <div class="card card-mood"></div>
+  <div class="card card-arc" [class.played]="arcCard">
+    <div *ngIf="arcCard">
+      <div class="card-category">{{arcCard.kind}}</div>
+      <div class="card-term">{{arcCard.name}}</div>
+    </div>
+  </div>
+  <div class="card card-terrain" [class.played]="terrainCard">
+    <div *ngIf="terrainCard">
+      <div class="card-category">{{terrainCard.kind}}</div>
+      <div class="card-term">{{terrainCard.name}}</div>
+    </div>
+  </div>
+  <div class="card card-object" [class.played]="objectCard">
+    <div *ngIf="objectCard">
+      <div class="card-category">{{objectCard.kind}}</div>
+      <div class="card-term">{{objectCard.name}}</div>
+    </div>
+  </div>
+  <div class="card card-mood" [class.played]="moodCard">
+    <div *ngIf="moodCard">
+      <div class="card-category">{{moodCard.kind}}</div>
+      <div class="card-term">{{moodCard.name}}</div>
+    </div>
+  </div>
 </div>
 

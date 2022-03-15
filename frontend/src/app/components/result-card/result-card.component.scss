@@ -1,0 +1,28 @@
+@import '../../../colors';
+@import '../../../fonts';
+
+:host {
+  background-color: $tftf-light-yellow;
+  width: 20rem;
+  height: 20rem;
+  border-radius: 8px 8px 8px 8px;
+  padding: 0.5rem;
+}
+
+.text-container {
+  font-family: Cabin, sans-serif;
+  font-size: 1rem;
+  background-color: white;
+  color: darkslategrey;
+  border: 1px solid lightgrey;
+  border-radius: 8px 8px 8px 8px;
+  overflow: scroll;
+  height: 13rem;
+  padding: 0.25rem;
+}
+
+.winner {
+  color: black;
+  font-family: 'Bebas Neue', serif;
+  font-size: x-large;
+}

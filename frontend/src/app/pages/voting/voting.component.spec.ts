@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EmptyCardSpaceComponent } from './empty-card-space.component';
+import { VotingComponent } from './voting.component';
 
-describe('EmptyCardSpaceComponent', () => {
-  let component: EmptyCardSpaceComponent;
-  let fixture: ComponentFixture<EmptyCardSpaceComponent>;
+describe('VotingComponent', () => {
+  let component: VotingComponent;
+  let fixture: ComponentFixture<VotingComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EmptyCardSpaceComponent ]
+      declarations: [ VotingComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EmptyCardSpaceComponent);
+    fixture = TestBed.createComponent(VotingComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -5,6 +5,7 @@ import {GameState} from "../schemas/room.schema";
 
 export class GameTickDTO {
     roomId: string
+    winner: Player
     admin: Player
     playedCards: Card[]
     players: PlayerDataDto[]

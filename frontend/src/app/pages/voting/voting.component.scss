@@ -1,0 +1,45 @@
+@import '../../../colors';
+@import '../../../fonts';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  text-align: center;
+  align-content: center;
+  height: 100%;
+}
+
+.game-title {
+  color: white;
+  font-family: 'Bebas Neue', sans-serif;
+  text-align: center;
+}
+
+.timer {
+  margin: 0 auto;
+  color: $tftf-yellow;
+  font-family: 'Bebas Neue', serif;
+  font-size: xx-large;
+  text-align: center;
+  align-self: end;
+}
+
+.exit-button {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+}
+
+.voting-cards-container {
+  align-self: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-content: center;
+  justify-content: center;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}

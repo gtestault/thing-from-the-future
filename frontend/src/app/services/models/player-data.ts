@@ -4,4 +4,5 @@ export interface PlayerData {
   username: string;
   isCurrentPlayer: boolean;
   cards: Card[];
+  futureThing: string;
 }
