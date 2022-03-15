@@ -10,8 +10,8 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 })
 export class VotingCardComponent implements OnInit {
 
-  @HostBinding('style.voted')
-  border = '2px solid $tftf-green';
+  @HostBinding('style.border')
+  border = '5px solid #FFF7CA';
 
   @Input() text = '';
   @Input() author = '';
@@ -30,6 +30,7 @@ export class VotingCardComponent implements OnInit {
   async vote() {
     try {
       await this.gameService.submitVote(this.author)
+      this.border = '5px solid #36B722';
       showSuccessSnackbar(this.snackbar, `you voted for ${this.author}'s idea!`)
     } catch (e) {
       showErrorSnackbar(this.snackbar, `Failed to vote: ${e.toString()}`)
