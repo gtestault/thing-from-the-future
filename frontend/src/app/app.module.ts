@@ -35,6 +35,7 @@ import { ExitRoomButtonComponent } from './components/exit-room-button/exit-room
 import { VotingComponent } from './pages/voting/voting.component';
 import { VotingCardComponent } from './components/voting-card/voting-card.component';
 import { WinnerAnnouncementComponent } from './pages/winner-announcement/winner-announcement.component';
+import { ResultCardComponent } from './components/result-card/result-card.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { WinnerAnnouncementComponent } from './pages/winner-announcement/winner-
     VotingComponent,
     VotingCardComponent,
     WinnerAnnouncementComponent,
+    ResultCardComponent,
   ],
   imports: [
     MatIconModule,

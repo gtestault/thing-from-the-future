@@ -37,6 +37,8 @@ export class Room {
     gameState: GameState
     @Prop({ type: mongoose.Schema.Types.String, ref: 'Player' })
     currentPlayer: Player
+    @Prop({ type: mongoose.Schema.Types.String, ref: 'Player' })
+    winner: Player
     @Prop({ type: [{ type: mongoose.Schema.Types.String, ref: 'Player' }] })
     playerQueue: Player[]
     @Prop({type: mongoose.Schema.Types.Number, default: 0})

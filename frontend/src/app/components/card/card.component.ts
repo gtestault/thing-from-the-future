@@ -14,6 +14,9 @@ import * as _ from "lodash";
 })
 export class CardComponent implements OnInit {
 
+  @Input() canPlay: boolean = false
+  @Input() staticCard: boolean = false
+  canPlayCategory: boolean = false
   constructor(
     private gameService: GameService,
     private playerService: PlayerService,
@@ -21,12 +24,7 @@ export class CardComponent implements OnInit {
   ) {
   }
 
-  gameUpdatesSubscription: Subscription | null = null;
   playedCards: Card[] = []
-  moodCardPlayed: boolean = false;
-  arcCardPlayed: boolean = false;
-  terrainCardPlayed: boolean = false;
-  objectCardPlayed: boolean = false;
   @HostBinding('style.position')
   position = 'relative';
 
@@ -35,42 +33,12 @@ export class CardComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.gameService.init()
-    this.gameUpdatesSubscription = this.gameService.getGameUpdates().subscribe(update => {
-      this.moodCardPlayed = !!_.find(update.playedCards, c => c.kind == "mood")
-      this.arcCardPlayed = !!_.find(update.playedCards, c => c.kind == "arc")
-      this.objectCardPlayed = !!_.find(update.playedCards, c => c.kind == "object")
-      this.terrainCardPlayed = !!_.find(update.playedCards, c => c.kind == "terrain")
-    });
   }
 
   async playCard(kind: string, name: string) {
-    const cardAlreadyPlayedError = "A card of this kind has been played already"
-    switch (kind) {
-      case "mood":
-        if (this.moodCardPlayed) {
-          showErrorSnackbar(this.snackbar, cardAlreadyPlayedError);
-          return
-        }
-        break
-      case "arc":
-        if (this.arcCardPlayed) {
-          showErrorSnackbar(this.snackbar, cardAlreadyPlayedError);
-          return
-        }
-        break
-      case "object":
-        if (this.objectCardPlayed) {
-          showErrorSnackbar(this.snackbar, cardAlreadyPlayedError);
-          return
-        }
-        break
-      case "terrain":
-        if (this.terrainCardPlayed) {
-          showErrorSnackbar(this.snackbar, cardAlreadyPlayedError);
-          return
-        }
-        break
+    if (!this.canPlay) {
+      showErrorSnackbar(this.snackbar, "This card cannot be played at the moment");
+      return
     }
     try {
       await this.gameService.playCard(kind, name)

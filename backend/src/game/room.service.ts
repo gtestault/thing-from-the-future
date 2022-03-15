@@ -15,11 +15,12 @@ import {RoomAdminActionException} from "./exceptions/room-admin-action-exception
 import {PlayerDataDto} from "./dto/player-data-dto";
 import {GameTickDTO} from "./dto/game-tick-dto";
 import {PlayerDoesNotExistException} from "./exceptions/player-does-not-exist-exception";
+import {AlreadyVotedException} from "./exceptions/already-voted-exception";
 
 @Injectable()
 export class RoomService {
     private readonly logger = new Logger(RoomService.name);
-    private static PLAYER_CARDS_COUNT = 7
+    private static PLAYER_CARDS_COUNT = 6
     private static PLAYFIELD_MAX_CARDS = 4
     public static PLAYER_TURN_TIME_SECONDS = 30
     private static BRAINSTORM_PLAYTIME_SECONDS = 240
@@ -29,7 +30,7 @@ export class RoomService {
     }
 
     private async getRoomById(roomId: string): Promise<RoomDocument> {
-        return await this.roomModel.findById(roomId).populate(["currentPlayer", "players", "admin", "playerQueue"]).exec()
+        return await this.roomModel.findById(roomId).populate(["currentPlayer", "players", "admin", "playerQueue", "winner"]).exec()
     }
 
     /**
@@ -87,12 +88,22 @@ export class RoomService {
         if (room.gameState !== GameState.PLAYING_IDEA_SELECTION) {
             throw new ActionNotAllowedException()
         }
+        if (_.includes(room.playerQueue.map(p => p.username), player.username)) {
+           throw new AlreadyVotedException()
+        }
         if (!_.includes(room.players.map(p => p.username), username)) {
             throw new PlayerDoesNotExistException()
         }
         room.playerPoints[username] += 1
+        room.playerQueue = [...room.playerQueue, player]
         const everyBodyHasVoted = _.sum(Object.values(room.playerPoints)) >= room.players.length
         if (everyBodyHasVoted) {
+            let max = 0
+            for (let player of room.players) {
+                if (room.playerPoints[player.username] > max) {
+                   room.winner = player
+                }
+            }
             room.gameState = GameState.WINNER_ANNOUNCEMENT
         }
         room.markModified('playerPoints')
@@ -148,6 +159,7 @@ export class RoomService {
                 break;
             case GameState.PLAYING_IDEA_SELECTION:
                 room.timeRemaining -= 1
+                room.playerQueue = []
                 if (room.timeRemaining <= 0) {
                     room.gameState = GameState.WINNER_ANNOUNCEMENT
                 }
@@ -235,7 +247,7 @@ export class RoomService {
     }
 
     async allRooms(): Promise<Room[]> {
-        return await this.roomModel.find({}).populate(["currentPlayer", "players", "admin", "playerQueue"]).exec()
+        return await this.roomModel.find({}).populate(["currentPlayer", "players", "admin", "playerQueue", "winner"]).exec()
     }
 
     async leaveRoom(roomId: string, player: Player) {
@@ -252,6 +264,7 @@ export class RoomService {
         const gameData: GameTickDTO = {
             roomId: room._id,
             playedCards: room.playedCards,
+            winner: room.winner,
             players: this.getAggregatedPlayerData(room.players, room.playerQueue, room.playerCards, room.playerStories, room.currentPlayer),
             timeRemaining: room.timeRemaining,
             admin: room.admin,

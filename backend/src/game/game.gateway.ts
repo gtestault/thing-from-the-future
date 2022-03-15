@@ -162,7 +162,7 @@ export class GameGateway implements OnGatewayConnection<Socket>, OnGatewayDiscon
         for (const room of rooms) {
             const roomsAdapter = this.server.sockets.adapter.rooms
             if (!roomsAdapter.get(room._id) || roomsAdapter.get(room._id).size == 0) {
-                //this.roomService.deleteRoom(room._id)
+                this.roomService.deleteRoom(room._id)
                 continue
             }
             const tick: GameTickDTO = this.roomService.getGameData(room)

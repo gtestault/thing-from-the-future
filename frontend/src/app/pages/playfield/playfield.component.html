@@ -4,7 +4,7 @@
   <app-turn-indicator [currentPlayer]="currentPlayer"
                       [isMyTurn]="isMyTurn"
                       [timeRemaining]="timeRemaining"></app-turn-indicator>
-  <app-players-cards [cards]="myCards"></app-players-cards>
+  <app-players-cards [playedCards]="playedCards" [isMyTurn]="isMyTurn" [cards]="myCards"></app-players-cards>
   <app-player-overview [players]="players"></app-player-overview>
   <app-swap-cards-button [isMyTurn]="isMyTurn"></app-swap-cards-button>
 </div>

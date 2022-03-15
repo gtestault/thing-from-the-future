@@ -1,6 +1,6 @@
 <div class="card" (click)="playCard(kind, name)"
      [ngClass]="{'card-object': kind === 'object', 'card-mood': kind === 'mood',
-     'card-terrain': kind === 'terrain', 'card-arc': kind === 'arc'}">
+     'card-terrain': kind === 'terrain', 'card-arc': kind === 'arc', 'cannot-play': !canPlay && !staticCard}">
   <div>
     <div class="card-category">{{kind}}</div>
     <div class="card-term">{{name}}</div>
