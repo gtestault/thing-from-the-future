@@ -8,14 +8,14 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: secret
     ports:
       - "27017:27017"
-#  backend:
-#    build: ./backend
-#    restart: always
-#  frontend:
-#    build: ./frontend
-#    restart: always
-#    depends_on:
-#      - backend
-#      - mongodb
-#    ports:
-#      - "3001:80"
+  backend:
+    image: qqqturing/tftf-backend
+    restart: always
+  frontend:
+    image: qqqturing/tftf-frontend
+    restart: always
+    depends_on:
+      - backend
+      - mongodb
+    ports:
+      - "3001:80"

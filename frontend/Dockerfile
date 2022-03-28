@@ -4,7 +4,7 @@ WORKDIR "/home/frontend"
 COPY package.json yarn.lock ./
 RUN yarn install
 COPY . .
-RUN yarn build
+RUN yarn build --configuration production
 
 FROM nginx:1.21-alpine
 RUN mkdir -p /var/www/tftf

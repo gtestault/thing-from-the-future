@@ -6,16 +6,18 @@ import {MongooseModule} from '@nestjs/mongoose';
 import {PlayerModule} from './player/player.module';
 import {PlayerController} from "./player/player.controller";
 import {ScheduleModule} from "@nestjs/schedule";
+import { ConfigModule } from '@nestjs/config';
 
 
 @Module({
     imports: [
-        MongooseModule.forRoot('mongodb://root:secret@localhost', {dbName: "nest"}),
+        ConfigModule.forRoot(),
+        MongooseModule.forRoot('mongodb://root:secret@mongodb', {dbName: "nest"}),
         ScheduleModule.forRoot(),
         GameModule,
         PlayerModule,
     ],
-    controllers: [AppController, PlayerController],
+    controllers: [PlayerController],
     providers: [AppService],
 })
 export class AppModule {

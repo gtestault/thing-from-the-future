@@ -22,7 +22,6 @@ export class PlayersCardsComponent implements OnInit {
     this.terrainCard = _.find(this._playedCards, (c => c.kind === "terrain"))
     this.objectCard = _.find(this._playedCards, (c => c.kind === "object"))
     this.moodCard = _.find(this._playedCards, (c => c.kind === "mood"))
-    console.log({mood: !!this.moodCard})
   }
   isKindPlayed(kind: CardKind): boolean {
     switch (kind) {

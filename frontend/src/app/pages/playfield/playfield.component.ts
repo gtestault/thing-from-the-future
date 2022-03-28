@@ -39,7 +39,6 @@ export class PlayfieldComponent implements OnInit {
       if (update.gameState === GameState.PLAYING_BRAINSTORM) {
         this.router.navigate([BRAINSTORM_PATH])
       }
-      console.log(update)
       this.players = update.players
       this.playedCards = update.playedCards
       this.myCards = _.find(update.players, p => p.username === this.ownUsername)!.cards

@@ -1,4 +1,4 @@
-import {Component, HostBinding, Input, OnInit} from '@angular/core';
+import {Component, HostBinding, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges} from '@angular/core';
 import {GameService} from "../../services/game.service";
 import {showErrorSnackbar, showSuccessSnackbar} from "../../utils/snackbar";
 import {MatSnackBar} from "@angular/material/snack-bar";
@@ -8,33 +8,25 @@ import {MatSnackBar} from "@angular/material/snack-bar";
   templateUrl: './voting-card.component.html',
   styleUrls: ['./voting-card.component.scss']
 })
-export class VotingCardComponent implements OnInit {
+export class VotingCardComponent {
 
   @HostBinding('style.border')
   border = '5px solid #FFF7CA';
 
   @Input() text = '';
   @Input() author = '';
-
-  voted = false;
+  @Input() canVote = true;
+  @Output() voteSent = new EventEmitter<string>();
 
   constructor(
     private gameService: GameService,
     private snackbar: MatSnackBar,
-  ) { }
-
-  ngOnInit(): void {
-    this.gameService.init()
+  ) {
   }
 
   async vote() {
-    try {
-      await this.gameService.submitVote(this.author)
-      this.border = '5px solid #36B722';
-      showSuccessSnackbar(this.snackbar, `you voted for ${this.author}'s idea!`)
-    } catch (e) {
-      showErrorSnackbar(this.snackbar, `Failed to vote: ${e.toString()}`)
-    }
+    this.border = '5px solid #36B722';
+    this.voteSent.emit(this.author);
   }
 
 }

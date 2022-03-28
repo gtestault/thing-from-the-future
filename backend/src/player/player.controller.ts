@@ -4,7 +4,7 @@ import {NewPlayerDTO} from "./dto/new-player";
 import {Response} from "express"
 
 @UsePipes(new ValidationPipe({}))
-@Controller('player')
+@Controller('api/v1/player')
 export class PlayerController {
     private readonly logger = new Logger(PlayerController.name);
     constructor(private playerService: PlayerService) {
