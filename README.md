@@ -30,6 +30,12 @@ Up to 6 players can play together to brainstorm ideas.
 
 ![img.png](doc/az-compose.png)
 
+### Architecture
+
+The app uses *mongodb* for storage and *nestjs* as a backend framework. *Angular* is used for the frontend.
+
+![arch](doc/arch.png)
+
 ### Local Development
 
 **Requirements**
