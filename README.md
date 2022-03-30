@@ -17,7 +17,7 @@ Up to 6 players can play together to brainstorm ideas.
 
 ### Deploy with Azure App Services
 
-1. adjust server URL `frontendRoot ` in the configuration file `frontend/src/environments/environment.prod.ts` to match your azure Web App URL. The URL is `https://YOUR_AZ_APP_NAME.azurewebsites.net` (make sure `YOUR_AZ_APP_NAME` is available in Azure first.)
+1. adjust server URL `frontendRoot` in the configuration file `frontend/src/environments/environment.prod.ts` to match your azure Web App URL. The URL is `https://YOUR_AZ_APP_NAME.azurewebsites.net` (make sure `YOUR_AZ_APP_NAME` is available in Azure first.)
 2. Build the frontend and backend containers and publish them to docker hub.
    - For frontend inside the `frontend` directory: `docker build -t YOUR_DOCKER_HUB_USERNAME/tftf-frontend .` and push with `docker push YOUR_DOCKER_HUB_USERNAME/tftf-frontend`  
    - For backend inside the `backend` directory: `docker build -t YOUR_DOCKER_HUB_USERNAME/tftf-backend .` and push with `docker push YOUR_DOCKER_HUB_USERNAME/tftf-backend`
